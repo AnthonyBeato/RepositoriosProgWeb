@@ -69,5 +69,13 @@ public class ControllerVentas extends ControllerBase {
             });
         });
 
+        app.routes(() -> {
+            path("/", () -> {
+                get("/dashboard", ctx -> {
+                    ctx.render("/templates/vista/dashboard.html");
+                });
+            });
+        });
+
     }
 }

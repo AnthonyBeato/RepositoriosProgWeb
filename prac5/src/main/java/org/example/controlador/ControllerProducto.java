@@ -344,13 +344,5 @@ public class ControllerProducto extends ControllerBase {
                 });
             });
         });
-
-        app.routes(() -> {
-            path("/", () -> {
-                get("/dashboard", ctx -> {
-                    ctx.render("/templates/vista/dashboard.html");
-                });
-            });
-        });
     }
 }
