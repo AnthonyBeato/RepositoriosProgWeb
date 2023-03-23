@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <script src="/js/jquery-3.2.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
       <style type="text/css">
           body, button, a, h1, h2{
             font-family: 'Montserrat', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -40,7 +40,7 @@
         <h1>Dashboard administrativo</h1>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
@@ -50,6 +50,18 @@
                     <div class="card-body">
                         <canvas id="myPieChart"></canvas>
                     </div>
+
+                    <div id="prueba">
+                        <div th:each="label : ${labels}">
+                            <p th:text="${label}"></p>
+                        </div>
+                        <div th:each="value : ${data}">
+                            <p th:text="${value}"></p>
+                        </div>
+                    </div>
+
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,7 +69,8 @@
 
     <!-- Incluye los recursos de Chart.js y Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/esm/popper-lite.min.js"></script>
+
+
 
     <!-- Incluye tu archivo JS personalizado -->
 <!--    <script src="/js/configPieChart.js"></script>-->
@@ -65,13 +78,15 @@
     <script th:inline="javascript">
         $(function () {
             var ctx = document.getElementById('myPieChart').getContext('2d');
+            var labels = /*aquí pasamos la lista como cadena*/ [[${labels}]];
+            var data = /*aquí pasamos la lista como cadena*/ [[${data}]];
             var myPieChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: /*[[${labels}]]*/,
+                    labels: labels,
                     datasets: [{
                         label: "Ventas por producto",
-                        data: /*[[${data}]]*/,
+                        data: data,
                         backgroundColor: [
                             'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)',

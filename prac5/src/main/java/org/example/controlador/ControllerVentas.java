@@ -3,6 +3,7 @@ package org.example.controlador;
 import Utilidad.ControllerBase;
 import io.javalin.Javalin;
 import org.example.encapsulacion.CarroCompras;
+import org.example.encapsulacion.Producto;
 import org.example.encapsulacion.Usuario;
 import org.example.encapsulacion.VentaProductos;
 import org.example.servicios.ServiciosVentasProductos;
@@ -76,24 +77,27 @@ public class ControllerVentas extends ControllerBase {
                     // Crear lista de etiquetas y datos para el piechart
                     List<String> labels = new ArrayList<>();
                     List<Integer> data = new ArrayList<>();
-                    int cont = 0;
                     for (VentaProductos venta : ventas) {
-                        if (!labels.contains(venta.getProductos().get(cont).getNombre())) {
-                            labels.add(venta.getProductos().get(cont).getNombre());
-                            data.add(1);
-                        } else {
-                            int index = labels.indexOf(venta.getProductos().get(cont).getNombre());
-                            data.set(index, data.get(index) + 1);
+                        for (Producto producto : venta.getProductos()) {
+                            if (!labels.contains(producto.getNombre())) {
+                                labels.add(producto.getNombre());
+                                data.add(1);
+                            } else {
+                                int index = labels.indexOf(producto.getNombre());
+                                data.set(index, data.get(index) + 1);
+                            }
                         }
-                        cont++;
                     }
 
                     // Agregar los datos al objeto Context
-                    Context thymeleafContext = new Context();
-                    thymeleafContext.setVariable("labels", labels);
-                    thymeleafContext.setVariable("data", data);
+//                    Context thymeleafContext = new Context();
+//                    thymeleafContext.setVariable("labels", labels);
+//                    thymeleafContext.setVariable("data", data);
+                    Map<String, Object> modelo = new HashMap<>();
 
-                    ctx.render("/templates/vista/dashboard.html");
+                    modelo.put("labels", labels);
+                    modelo.put("data", data);
+                    ctx.render("/templates/vista/dashboard.html", modelo);
                 });
             });
         });

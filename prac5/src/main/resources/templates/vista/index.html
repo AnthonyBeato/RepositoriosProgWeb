@@ -74,16 +74,6 @@
                 Listado de productos
             </h1>
         </div>
-
-        <div th:if="${session.usuario != null}">
-            <div th:if="${session.usuario.usuario eq 'admin'}">
-                <div class="row">
-                    <div class="row align-items-end">
-                        <a href="/dashboard" class="btn btn-info">Dashboard</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 
@@ -94,6 +84,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8 offset-md-2">
+                <div class="col-lg-2 offset-md-10">
+                    <div th:if="${session.usuario != null}">
+                        <div th:if="${session.usuario.usuario eq 'admin'}">
+                            <div class="row">
+                                <div class="row align-items-end">
+                                    <a href="/dashboard" class="btn btn-outline-info">Dashboard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
                 <div class="row align-items-start">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -162,10 +164,25 @@
                 </div>
             </div>
 
+            <div class="col-md-2 offset-md-8">
+                <div class="text-end">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="font-size: 1.5em">
+                                <p>En linea:</p>
+                            </div>
+                            <p><span id="userCount">0</span> usuarios</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
 
         </div>
     </div>
-    <p>Usuarios conectados: <span id="userCount">0</span></p>
+
 
     <script>
         const userCount = document.getElementById('userCount');
