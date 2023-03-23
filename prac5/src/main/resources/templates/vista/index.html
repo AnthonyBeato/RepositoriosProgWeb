@@ -74,6 +74,16 @@
                 Listado de productos
             </h1>
         </div>
+
+        <div th:if="${session.usuario != null}">
+            <div th:if="${session.usuario.usuario eq 'admin'}">
+                <div class="row">
+                    <div class="row align-items-end">
+                        <a href="/dashboard" class="btn btn-info">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
