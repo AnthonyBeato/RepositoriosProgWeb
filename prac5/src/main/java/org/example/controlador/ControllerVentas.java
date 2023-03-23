@@ -7,12 +7,11 @@ import org.example.encapsulacion.Usuario;
 import org.example.encapsulacion.VentaProductos;
 import org.example.servicios.ServiciosVentasProductos;
 import  org.example.BaseDatos.BDCockroach;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.context.WebContext;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -72,6 +71,28 @@ public class ControllerVentas extends ControllerBase {
         app.routes(() -> {
             path("/", () -> {
                 get("/dashboard", ctx -> {
+                    List<VentaProductos> ventas = serviciosVentasProductos.obtenerVentas();
+
+                    // Crear lista de etiquetas y datos para el piechart
+                    List<String> labels = new ArrayList<>();
+                    List<Integer> data = new ArrayList<>();
+                    int cont = 0;
+                    for (VentaProductos venta : ventas) {
+                        if (!labels.contains(venta.getProductos().get(cont).getNombre())) {
+                            labels.add(venta.getProductos().get(cont).getNombre());
+                            data.add(1);
+                        } else {
+                            int index = labels.indexOf(venta.getProductos().get(cont).getNombre());
+                            data.set(index, data.get(index) + 1);
+                        }
+                        cont++;
+                    }
+
+                    // Agregar los datos al objeto Context
+                    Context thymeleafContext = new Context();
+                    thymeleafContext.setVariable("labels", labels);
+                    thymeleafContext.setVariable("data", data);
+
                     ctx.render("/templates/vista/dashboard.html");
                 });
             });

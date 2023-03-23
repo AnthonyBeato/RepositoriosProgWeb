@@ -1,12 +1,15 @@
 package org.example.servicios;
 
+import com.google.gson.Gson;
 import org.example.BaseDatos.GestionBD;
 import org.example.encapsulacion.VentaProductos;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServiciosVentasProductos extends GestionBD<VentaProductos> {
     private static ServiciosVentasProductos instancia;
@@ -73,9 +76,25 @@ public class ServiciosVentasProductos extends GestionBD<VentaProductos> {
 
     public VentaProductos obtenerVentaPorId(String idVentas) {
         EntityManager em = getEntityManager();
-        Query query = em.createQuery("SELECT v FROM VentaProductos v JOIN FETCH v.listaProductos WHERE v.id = :idVentas", VentaProductos.class);
+        Query query = em.createQuery("SELECT v FROM VentaProductos v JOIN FETCH v.productos WHERE v.id = :idVentas", VentaProductos.class);
         query.setParameter("idVentas", idVentas);
         VentaProductos ventaProductos = (VentaProductos) query.getSingleResult();
         return ventaProductos;
+    }
+
+    public String generarJsonData(List<VentaProductos> ventasList) {
+        List<String> labels = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
+        int cont = 0;
+        for (VentaProductos ventas : ventasList) {
+            labels.add(ventas.getProductos().get(cont).getNombre());
+            data.add(ventas.getProductos().get(cont).getCantidad());
+
+            cont++;
+        }
+        Map<String, Object> jsonData = new HashMap<>();
+        jsonData.put("labels", labels);
+        jsonData.put("data", data);
+        return new Gson().toJson(jsonData);
     }
 }
