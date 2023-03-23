@@ -2,39 +2,44 @@ package org.example;
 
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
-import org.example.BaseDatos.BDCockroach;
+import io.javalin.websocket.WsConnectContext;
 import org.example.BaseDatos.Bootstrap;
 import org.example.controlador.*;
-import org.example.encapsulacion.*;
+import org.example.encapsulacion.Comentario;
+import org.example.encapsulacion.Foto;
+import org.example.encapsulacion.Producto;
+import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosComentario;
 import org.example.servicios.ServiciosFoto;
 import org.example.servicios.ServiciosProducto;
 import org.example.servicios.ServiciosUsuario;
 import org.h2.engine.User;
+import io.javalin.websocket.WsContext;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 //import jakarta.persistence.*;
 
+import org.eclipse.jetty.websocket.api.Session;
+
 public class Main {
+    private static final Map<String, WsConnectContext> users = new ConcurrentHashMap<>();
     private static String connectionMethod = "";
+    public static List<Session> usuariosConectados = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
+
         //Configuración de Hibernate
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        try {
-            BDCockroach bdCockroach = BDCockroach.getInstance();
-            Connection connection = bdCockroach.getConnection();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
 
         Bootstrap.getInstance().init();
@@ -64,6 +69,8 @@ public class Main {
                 staticFileConfig.hostedPath = "/";
                 staticFileConfig.directory = "/publico";
                 staticFileConfig.location = Location.CLASSPATH;
+                staticFileConfig.aliasCheck = null;
+                staticFileConfig.precompress = false;
             });
         });
 
@@ -82,6 +89,48 @@ public class Main {
 
         entityManager.close();
         entityManagerFactory.close();
+
+        app.ws("/ws", ws -> {
+            ws.onConnect(ctx -> {
+                System.out.println("Conexión entrante: " + ctx.getSessionId());
+                String userId = getUserIdFromSession(ctx);
+                if (userId != null) {
+                    users.put(userId, ctx);
+                    broadcastUserCount();
+                }
+            });
+
+            ws.onClose(ctx -> {
+                System.out.println("Conexión cerrada: " + ctx.getSessionId());
+                String userId = getUserIdFromSession(ctx);
+                if (userId != null) {
+                    users.remove(userId);
+                    broadcastUserCount();
+                }
+            });
+
+            ws.onError(ctx -> {
+                System.out.println("Error en conexión: " + ctx.getSessionId());
+                String userId = getUserIdFromSession(ctx);
+                if (userId != null) {
+                    users.remove(userId);
+                }
+            });
+        });
+    }
+
+    private static String getUserIdFromSession(WsContext ctx) {
+        Usuario usuario = ctx.sessionAttribute("usuario");
+        if (usuario != null) {
+            return usuario.getIdUsuario();
+        }
+        return null;
+    }
+
+    private static void broadcastUserCount() {
+        users.values().forEach(user -> {
+            user.send(Integer.toString(users.size()));
+        });
     }
 
     public static String getConnectionMethod(){

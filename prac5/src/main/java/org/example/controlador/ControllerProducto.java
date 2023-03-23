@@ -257,21 +257,17 @@ public class ControllerProducto extends ControllerBase {
                 });
 
                 //Eliminar producto
-                post("/Eliminar/{idProducto}", ctx -> {
-                    String identificador = ctx.pathParam("idProducto");
+                post("/comentario/Eliminar/{idComentario}", ctx -> {
+                    Usuario usuario = ctx.sessionAttribute("usuario");
+                    String identificador = ctx.pathParam("idComentario");
 
-
-                    //Eliminar de la BD
-                    Producto producto = serviciosProducto.getProductByID(identificador);
-                    for (Comentario comentario: producto.getComentarios()) {
-                        if(comentario != null){
-                            serviciosComentario.eliminar(comentario.getIdComentario());
-                        }
+                    if (usuario.getUsuario().equalsIgnoreCase("admin")) {
+                        //Eliminar de la BD
+                        serviciosComentario.eliminar(identificador);
+                        ctx.redirect("/Seguridad/Productos");
+                    } else {
+                        ctx.render("/templates/vista/error.html");
                     }
-                    serviciosProducto.eliminar(identificador);
-
-
-                    ctx.redirect("/Seguridad/Productos");
                 });
 
 

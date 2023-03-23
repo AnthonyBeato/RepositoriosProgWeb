@@ -43,10 +43,16 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
     }
 
     public Usuario getUsuariotByUser (String usuario){
+
         EntityManager em = getEntityManager();
         Query query = em.createQuery("select e from Usuario e where e.usuario like :usuario");
         query.setParameter("usuario", "%"+usuario+"%");
         List<Usuario> list = query.getResultList();
+
+        if (list.isEmpty()) {
+            return null;
+        }
+
         return list.get(0);
     }
 

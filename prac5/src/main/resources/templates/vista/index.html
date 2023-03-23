@@ -165,6 +165,16 @@
 
         </div>
     </div>
+    <p>Usuarios conectados: <span id="userCount">0</span></p>
 
+    <script>
+        const userCount = document.getElementById('userCount');
+
+        const socket = new WebSocket('ws://localhost:7001/ws');
+
+        socket.addEventListener('message', (event) => {
+            userCount.textContent = event.data;
+        });
+    </script>
 </body>
 </html>
