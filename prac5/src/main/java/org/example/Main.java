@@ -36,6 +36,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+
         Bootstrap.getInstance().init();
 
         ServiciosUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin"));
