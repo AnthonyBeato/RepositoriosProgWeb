@@ -18,11 +18,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 //import jakarta.persistence.*;
 
+import org.eclipse.jetty.websocket.api.Session;
+
 public class Main {
     private static String connectionMethod = "";
+    public static List<Session> usuariosConectados = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         //Configuración de Hibernate
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
@@ -56,6 +62,8 @@ public class Main {
                 staticFileConfig.hostedPath = "/";
                 staticFileConfig.directory = "/publico";
                 staticFileConfig.location = Location.CLASSPATH;
+                staticFileConfig.aliasCheck = null;
+                staticFileConfig.precompress = false;
             });
         });
 

@@ -163,7 +163,7 @@
                                 <div th:if="${session.usuario != null}">
                                     <div th:if="${session.usuario.usuario eq 'admin'}">
                                         <form class="d-flex justify-content-end" method="post" th:action="'/producto/'+ ${idProducto} +'/comentario/Eliminar/' + ${comentario.idComentario}"  >
-                                            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                            <button type="submit" class="btn btn-outline-danger eliminar-comentario">Eliminar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -177,10 +177,6 @@
         </div>
     </div>
 
-    <script>
-        function setMainImage(image) {
-            document.getElementById('main-image').src = image;
-        }
-    </script>
+
 </body>
 </html>

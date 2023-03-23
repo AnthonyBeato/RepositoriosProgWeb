@@ -259,10 +259,18 @@ public class ControllerProducto extends ControllerBase {
                 //Eliminar producto
                 post("/Eliminar/{idProducto}", ctx -> {
                     String identificador = ctx.pathParam("idProducto");
-                    //serviciosProducto.deleteProducto(identificador);
+
 
                     //Eliminar de la BD
+                    Producto producto = serviciosProducto.getProductByID(identificador);
+                    for (Comentario comentario: producto.getComentarios()) {
+                        if(comentario != null){
+                            serviciosComentario.eliminar(comentario.getIdComentario());
+                        }
+                    }
                     serviciosProducto.eliminar(identificador);
+
+
                     ctx.redirect("/Seguridad/Productos");
                 });
 
