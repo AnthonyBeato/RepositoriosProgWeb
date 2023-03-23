@@ -6,6 +6,8 @@ import org.example.encapsulacion.CarroCompras;
 import org.example.encapsulacion.Usuario;
 import org.example.encapsulacion.VentaProductos;
 import org.example.servicios.ServiciosVentasProductos;
+import  org.example.BaseDatos.BDCockroach;
+
 
 import java.util.Date;
 import java.util.HashMap;
@@ -30,9 +32,12 @@ public class ControllerVentas extends ControllerBase {
                     CarroCompras carroCompras = ctx.sessionAttribute("carroCompras");
 
                     if(ctx.sessionAttribute("usuario") != null){
-                        VentaProductos ventaProductos = new VentaProductos(new Date(), usuario.getNombre().toString(), carroCompras.getListaProductos(), 0);
+                        java.util.Date utilDate = new java.util.Date();
+                        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                        VentaProductos ventaProductos = new VentaProductos(sqlDate, usuario.getNombre().toString(), carroCompras.getListaProductos(), 0);
                         //serviciosVentasProductos.createVentaProducto(ventaProductos);
                         serviciosVentasProductos.crearVenta(ventaProductos);
+                        BDCockroach.getInstance().insertarVenta(ventaProductos);
                         ctx.sessionAttribute("carroCompras", new CarroCompras());
                         carroCompras.setVendido(true); //Confirmar que el carrito fue vendido
                         System.out.println(ventaProductos.getNombreCliente());

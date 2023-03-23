@@ -2,12 +2,10 @@ package org.example;
 
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
+import org.example.BaseDatos.BDCockroach;
 import org.example.BaseDatos.Bootstrap;
 import org.example.controlador.*;
-import org.example.encapsulacion.Comentario;
-import org.example.encapsulacion.Foto;
-import org.example.encapsulacion.Producto;
-import org.example.encapsulacion.Usuario;
+import org.example.encapsulacion.*;
 import org.example.servicios.ServiciosComentario;
 import org.example.servicios.ServiciosFoto;
 import org.example.servicios.ServiciosProducto;
@@ -18,22 +16,25 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.UUID;
 //import jakarta.persistence.*;
 
-import org.eclipse.jetty.websocket.api.Session;
-
 public class Main {
     private static String connectionMethod = "";
-    public static List<Session> usuariosConectados = new ArrayList<>();
-
     public static void main(String[] args) throws IOException {
         //Configuración de Hibernate
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+        try {
+            BDCockroach bdCockroach = BDCockroach.getInstance();
+            Connection connection = bdCockroach.getConnection();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         Bootstrap.getInstance().init();
 
@@ -62,8 +63,6 @@ public class Main {
                 staticFileConfig.hostedPath = "/";
                 staticFileConfig.directory = "/publico";
                 staticFileConfig.location = Location.CLASSPATH;
-                staticFileConfig.aliasCheck = null;
-                staticFileConfig.precompress = false;
             });
         });
 

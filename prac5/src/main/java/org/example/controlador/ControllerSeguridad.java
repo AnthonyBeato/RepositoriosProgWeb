@@ -2,12 +2,19 @@ package org.example.controlador;
 
 import Utilidad.ControllerBase;
 import io.javalin.Javalin;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpSession;
 import org.example.encapsulacion.CarroCompras;
 import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosUsuario;
+import org.h2.engine.Session;
+import org.hibernate.Hibernate;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.jasypt.util.text.AES256TextEncryptor;
 
+import jakarta.servlet.http.HttpServletResponse;
 
 
 import java.util.*;
@@ -28,18 +35,19 @@ public class ControllerSeguridad extends ControllerBase {
     public void aplicarDireccionamiento() {
         app.routes(() -> {
             path("/", () ->{
-               before(ctx -> {
-                   CarroCompras carroCompras = ctx.sessionAttribute("carroCompras");
-                   if(carroCompras == null){
-                       ctx.sessionAttribute("carroCompras", new CarroCompras());
-                   }
-               });
+                before(ctx -> {
+                    CarroCompras carroCompras = ctx.sessionAttribute("carroCompras");
+                    if(carroCompras == null){
+                        ctx.sessionAttribute("carroCompras", new CarroCompras());
+                    }
+                });
             });
 
             path("/login", () -> {
                 get(ctx -> {
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     String data = ctx.cookie("data");
+
                     if(data != null){
                         AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
                         textEncryptor.setPassword("$2a$12$iDaIfhy8y7o12l4t9VEEEuPr6NG1iR/cplWVv1NATWVc2N/0L/722");
@@ -101,16 +109,28 @@ public class ControllerSeguridad extends ControllerBase {
                     }
                 });
                 post(ctx -> {
-                   String nombreUsuario = ctx.formParam("usuario");
-                   String password = ctx.formParam("contrasena");
-                   Usuario usuario = serviciosUsuario.getInstancia().authenticateUsuario(nombreUsuario, password);
-                   if(usuario != null){
-                       ctx.sessionAttribute("usuario", usuario);
-                       System.out.println("Se logueó el usuario: "+ usuario.getUsuario());
-                       ctx.redirect("/");
-                   }else {
-                       ctx.redirect("/login");
-                   }
+                    String nombreUsuario = ctx.formParam("usuario");
+                    String password = ctx.formParam("contrasena");
+                    Usuario usuario = serviciosUsuario.getInstancia().authenticateUsuario(nombreUsuario, password);
+                    String checkboxValue = ctx.formParam("rememberMe");
+                    if(checkboxValue != null){
+                        AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+                        textEncryptor.setPassword("$2a$12$iDaIfhy8y7o12l4t9VEEEuPr6NG1iR/cplWVv1NATWVc2N/0L/722");
+                        String data = textEncryptor.encrypt(usuario.getUsuario());
+                        ctx.cookie("data", data, 604800);
+                        ctx.sessionAttribute("LoginSession", ctx.cookie("data", data, 604800));
+
+                    }else {
+                        System.out.println("No se selecciono ");
+                    }
+
+                    if(usuario != null){
+                        ctx.sessionAttribute("usuario", usuario);
+                        System.out.println("Se logueó el usuario: "+ usuario.getUsuario());
+                        ctx.redirect("/");
+                    }else {
+                        ctx.redirect("/login");
+                    }
                 });
             });
             path("/logout", () -> {

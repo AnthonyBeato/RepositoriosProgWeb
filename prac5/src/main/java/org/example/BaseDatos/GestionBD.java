@@ -1,5 +1,4 @@
 package org.example.BaseDatos;
-
 //import edu.pucmm.eict.ormjpa.Main;
 //import jakarta.persistence.*;
 //import jakarta.persistence.criteria.CriteriaQuery;
