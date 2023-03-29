@@ -1,12 +1,19 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 
+mainClassName = 'org.example.Main'
+
+
 repositories {
     mavenCentral()
+    maven {
+        url "https://repo1.maven.org/maven2"
+    }
 }
 
 dependencies {
