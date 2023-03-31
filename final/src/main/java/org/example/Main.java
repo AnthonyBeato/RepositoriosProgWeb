@@ -5,6 +5,7 @@ import io.javalin.http.staticfiles.Location;
 import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsContext;
 import org.example.BaseDatos.Bootstrap;
+import org.example.controlador.ControllerAcortador;
 import org.example.controlador.ControllerSeguridad;
 import org.example.controlador.ControllerURL;
 import org.example.encapsulacion.Usuario;
@@ -43,7 +44,7 @@ public class Main {
         //Controladoras
         new ControllerSeguridad(app).aplicarDireccionamiento();
         new ControllerURL(app).aplicarDireccionamiento();
-        new ControllerURL(app).aplicarDireccionamiento();
+        new ControllerAcortador(app).aplicarDireccionamiento();
 
         //Iniciar
         app.start(7000);

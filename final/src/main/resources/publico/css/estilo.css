@@ -1,0 +1,13 @@
+body, button, a, h1, h2{
+    font-family: 'Raleway', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-weight: 600 !important;
+}
+
+header{
+    background-color: #272836;
+}
+
+.logo{
+    max-width: 90px;
+    min-height: 31px;
+}
