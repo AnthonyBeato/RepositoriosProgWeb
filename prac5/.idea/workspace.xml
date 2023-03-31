@@ -9,7 +9,12 @@
       <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/BaseDatos/GestionBD.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Acortador.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/URL.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/servicios/ServiciosAcortador.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/servicios/ServiciosURL.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/servicios/ServiciosUsuario.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/resources/META-INF/persistence.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../final/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../final/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../final/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Usuario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -81,7 +86,7 @@
       <updated>1680106815578</updated>
       <workItem from="1680106817977" duration="1347000" />
       <workItem from="1680218204491" duration="40000" />
-      <workItem from="1680218252321" duration="5345000" />
+      <workItem from="1680218252321" duration="6502000" />
     </task>
     <servers />
   </component>
