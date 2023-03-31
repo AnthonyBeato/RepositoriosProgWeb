@@ -5,16 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f63bed4a-f8ea-4bd2-8963-7514feed91ed" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../final/src/main/java/Utilidad/ControllerBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Usuario.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../final/src/main/resources/templates/vista/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/BaseDatos/Bootstrap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/BaseDatos/GestionBD.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Acortador.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/URL.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../final/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../final/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/../final/src/main/java/org/example/encapsulacion/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +81,7 @@
       <updated>1680106815578</updated>
       <workItem from="1680106817977" duration="1347000" />
       <workItem from="1680218204491" duration="40000" />
-      <workItem from="1680218252321" duration="1093000" />
+      <workItem from="1680218252321" duration="5345000" />
     </task>
     <servers />
   </component>

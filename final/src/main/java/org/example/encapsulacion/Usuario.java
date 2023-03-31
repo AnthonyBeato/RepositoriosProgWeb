@@ -19,12 +19,15 @@ public class Usuario {
     private String usuario;
     @Column(name = "contrasena")
     private String contrasena;
+    @Column(name = "is_admin")
+    private boolean isAdmin;
 
-    public Usuario(String nombre, String usuario, String contrasena) {
+    public Usuario(String nombre, String usuario, String contrasena, Boolean isAdmin) {
         this.idUsuario = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.usuario = usuario;
         this.contrasena = contrasena;
+        this.isAdmin = isAdmin;
     }
 
     public Usuario() {
@@ -61,6 +64,14 @@ public class Usuario {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public boolean equals(Object o) {

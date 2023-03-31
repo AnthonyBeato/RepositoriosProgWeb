@@ -17,10 +17,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'top.jfunc.json:json-gson:1.8.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-
-    implementation 'top.jfunc.json:json-gson:1.8.3'
     implementation("io.javalin:javalin:5.3.2")
     implementation("org.slf4j:slf4j-simple:2.0.3")
     implementation("io.javalin:javalin-rendering:5.3.2")
@@ -41,6 +40,7 @@ dependencies {
     implementation 'com.querydsl:querydsl-sql-spring:5.0.0'
 
     implementation 'org.webjars:chartjs:2.9.4'
+
 
 }
 
