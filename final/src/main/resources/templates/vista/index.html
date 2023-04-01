@@ -21,10 +21,10 @@
                 <img src="/images/Logo-with-White.png" alt="logo-LinkZip" class="logo">
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/" class="nav-link px-4 text-warning">Comprar</a></li>
-                    <li><a href="/Ventas" class="nav-link px-4 text-white">Ventas Realizadas</a></li>
-                    <li><a href="/Seguridad/Productos" class="nav-link px-4 text-white">Administrar Productos</a></li>
-                    <li><a href="/carritoCompras" class="nav-link px-4 text-white">Carrito (<span th:text="${cantidadProdCarrito}"></span>)</a></li>
+                    <li><a href="/" class="nav-link px-4 text-warning">Acortador</a></li>
+                    <li><a href="/Ventas" class="nav-link px-4 text-white">Mi listado de URL</a></li>
+<!--                    <li><a href="/Seguridad/Productos" class="nav-link px-4 text-white">Administrar Productos</a></li>-->
+<!--                    <li><a href="/carritoCompras" class="nav-link px-4 text-white">Carrito (<span th:text="${cantidadProdCarrito}"></span>)</a></li>-->
                 </ul>
 
                 <div class="text-end ml-3">
@@ -43,9 +43,49 @@
         </div>
     </header>
 
-    <div class="container">
+    <div class="container-fluid">
+        <h1>¡Bienvenido a LinkZip!</h1>
+        <div class="mb-3">
+            <form action="/acortar" method="post">
+                <div class="row">
+                    <div class="col-md-6 offset-2">
+                        <input type="url" name="url_original" class="form-control" id="exampleFormControlInput1" placeholder="Acortar tu link">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-warning">Acortar</button>
+                    </div>
+                </div>
+            </form>
 
+            <span>URL original:</span>
+            <input type="text" th:value="${url_original}" name="url_original" id="floatingInput">
+
+            <span>URL acortada:</span>
+            <input type="text" th:value="${url_acortada}" name="url_acortada" id="floatingInput2">
+
+            <a class="btn btn-warning" th:href="'/'+ ${url_acortada}">Enlace</a>
+
+        </div>
     </div>
 
+    <footer class="p-3 text-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <span>LinkZip es un proyecto hecho por:</span>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">Anthony Beato 1014-1684</li>
+                        <li class="list-inline-item">Albert Garcia 1014-2092</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="image-container">
+                        <img src="/images/Icon.png" alt="Icon LinkZip">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

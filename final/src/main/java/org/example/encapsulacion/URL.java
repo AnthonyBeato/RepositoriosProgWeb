@@ -14,7 +14,7 @@ public class URL {
     @JoinColumn(name = "usuario")
     private Usuario usuario;
 
-    public URL(String idURL, String URLOriginal, Usuario usuario) {
+    public URL(String URLOriginal, Usuario usuario) {
         this.idURL = UUID.randomUUID().toString();
         this.URLOriginal = URLOriginal;
         this.usuario = usuario;

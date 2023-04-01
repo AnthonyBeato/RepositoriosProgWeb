@@ -25,7 +25,7 @@ public class Acortador {
     @Column(name = "ip_address")
     private String ip_address;
 
-    public Acortador(String idAcortador, String URLAcortado, URL URLOriginal, LocalDateTime created_date_time, int visits_counter, String usuario_agente, String ip_address) {
+    public Acortador(String URLAcortado, URL URLOriginal, LocalDateTime created_date_time, int visits_counter, String usuario_agente, String ip_address) {
         this.idAcortador = UUID.randomUUID().toString();
         this.URLAcortado = URLAcortado;
         this.URLOriginal = URLOriginal;

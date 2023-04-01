@@ -7,6 +7,24 @@ header{
     background-color: #272836;
 }
 
+footer{
+    background-color: #272836;
+    color: white;
+    position: relative;
+}
+
+.image-container{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+}
+
+.image-container img{
+    max-width: 45px;
+    height: auto;
+}
+
 .logo{
     max-width: 90px;
     min-height: 31px;
