@@ -185,13 +185,25 @@
 
 
     <script>
-        const userCount = document.getElementById('userCount');
-
-        const socket = new WebSocket('ws://localhost:7001/ws');
-
-        socket.addEventListener('message', (event) => {
-            userCount.textContent = event.data;
+        $(document).ready(function() {
+            connect();
         });
+        function connect(){
+            const userCount = document.getElementById('userCount');
+
+            websocket = new WebSocket("ws://"+ location.hostname +":"+ location.port + "/ws");
+
+            websocket.onmessage = function (event){
+                updateComment
+            }
+
+
+            socket.addEventListener('message', (event) => {
+                userCount.textContent = event.data;
+            });
+
+        }
+
     </script>
 </body>
 </html>

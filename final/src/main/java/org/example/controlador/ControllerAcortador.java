@@ -1,6 +1,7 @@
 package org.example.controlador;
 
 import Utilidad.ControllerBase;
+import com.google.zxing.WriterException;
 import io.javalin.Javalin;
 import org.eclipse.jetty.http.HttpStatus;
 import org.example.encapsulacion.Acortador;
@@ -9,7 +10,9 @@ import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosURL;
 import org.example.servicios.ServiciosUsuario;
 
+import io.javalin.http.Context;
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -26,6 +29,12 @@ public class ControllerAcortador extends ControllerBase {
         super(app);
     }
 
+    public void mostrarQR(Context ctx) throws IOException, WriterException {
+        String urlAcortada = ctx.pathParam("urlAcortada");
+        byte[] codigoQR = generarCodigoQR(urlAcortada);
+
+        ctx.contentType("image/png").result(codigoQR);
+    }
     @Override
     public void aplicarDireccionamiento() {
         app.routes(() -> {
