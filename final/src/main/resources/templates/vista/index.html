@@ -11,40 +11,15 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header class="p-3 text-bg">
-        <div class="container-fluid">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <!--                <a href="/" class="d-flex align-items-left mb-2 mb-lg-0 text-white text-decoration-none">-->
-                <!--&lt;!&ndash;                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>&ndash;&gt;-->
-                <!--                    <img src="/publico/logo-invertido.png" alt="Logo-QuickBuy">-->
-                <!--                </a>-->
-                <img src="/images/Logo-with-White.png" alt="logo-LinkZip" class="logo">
 
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/" class="nav-link px-4 text-warning">Acortador</a></li>
-                    <li><a href="/Ventas" class="nav-link px-4 text-white">Mi listado de URL</a></li>
-<!--                    <li><a href="/Seguridad/Productos" class="nav-link px-4 text-white">Administrar Productos</a></li>-->
-<!--                    <li><a href="/carritoCompras" class="nav-link px-4 text-white">Carrito (<span th:text="${cantidadProdCarrito}"></span>)</a></li>-->
-                </ul>
+<div class="container-fluid">
 
-                <div class="text-end ml-3">
-
-                    <div th:if="${session.usuario == null}">
-                        <a href="/login" class="btn btn-outline-light me-2">Iniciar sesion</a>
-                        <a href="/registrar" class="btn btn-warning">Registrar</a>
-                    </div>
-
-                    <div th:if="${session.usuario != null}">
-                        <span th:text="${session.usuario.usuario}" class="ml-10"></span>
-                        <a href="/logout" class="btn btn-outline-danger mr-10">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div class="row">
+        <header th:include="templates/vista/reutilizable_fragments.html :: header"></header>
+    </div>
 
     <div class="container-fluid">
-        <h1>¡Bienvenido a LinkZip!</h1>
+        <h1>Bienvenido a LinkZip!</h1>
         <div class="mb-3">
             <form action="/acortar" method="post">
                 <div class="row">
@@ -68,24 +43,9 @@
         </div>
     </div>
 
-    <footer class="p-3 text-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <span>LinkZip es un proyecto hecho por:</span>
-                    <ul class="list-inline">
-                        <li class="list-inline-item">Anthony Beato 1014-1684</li>
-                        <li class="list-inline-item">Albert Garcia 1014-2092</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="image-container">
-                        <img src="/images/Icon.png" alt="Icon LinkZip">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div class="row">
+        <footer th:include="templates/vista/reutilizable_fragments.html :: footer"></footer>
+    </div>
+</div>
 </body>
 </html>
