@@ -32,6 +32,7 @@
                                 <th scope="col"> URL Original </th>
                                 <th scope="col"> Fecha creacion </th>
                                 <th scope="col"> Cantidad visitas </th>
+                                <th scope="col"> QR Code </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,9 @@
                                 <td th:text="${url.URLOriginal}"></td>
                                 <td th:text="${url.created_date_time}"></td>
                                 <td th:text="${url.visits_counter}"></td>
+                                <td>
+                                    <a href="/qr-code/${url.URLAcortado}" target="_blank">Mostrar QR</a>
+                                </td>
                             </tr>
                         </tbody>
                         <tfoot>

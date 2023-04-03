@@ -1,7 +1,6 @@
 package org.example.controlador;
 
 import Utilidad.ControllerBase;
-import com.google.zxing.WriterException;
 import io.javalin.Javalin;
 import org.eclipse.jetty.http.HttpStatus;
 import org.example.encapsulacion.Acortador;
@@ -10,13 +9,12 @@ import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosURL;
 import org.example.servicios.ServiciosUsuario;
 
-import io.javalin.http.Context;
 import javax.xml.crypto.Data;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -29,12 +27,6 @@ public class ControllerAcortador extends ControllerBase {
         super(app);
     }
 
-    public void mostrarQR(Context ctx) throws IOException, WriterException {
-        String urlAcortada = ctx.pathParam("urlAcortada");
-        byte[] codigoQR = generarCodigoQR(urlAcortada);
-
-        ctx.contentType("image/png").result(codigoQR);
-    }
     @Override
     public void aplicarDireccionamiento() {
         app.routes(() -> {
@@ -83,6 +75,49 @@ public class ControllerAcortador extends ControllerBase {
                         System.out.println(acortador.getURLOriginal().getURLOriginal());
                         ctx.redirect(acortador.getURLOriginal().getURLOriginal());
                     }
+               });
+
+               path("/Seguridad/URL", () -> {
+                   get("/misUrls", ctx -> {
+                       Map<String, Object> modelo = new HashMap<>();
+
+                       int actualPage = 1;
+                       String page = ctx.req().getParameter("page");
+                       if(page != null){
+                           try{
+                               actualPage = Integer.parseInt(page);
+                           }catch (NumberFormatException e){
+                               ctx.redirect("/");
+                           }
+                       }
+
+                       int cantURLSCortas = serviciosAcortador.findAll().size();
+                       int cantURLXPage = 10;
+                       int totalPages = (int) Math.ceil((double) cantURLSCortas/cantURLXPage);
+
+                       int indiceIni = (actualPage - 1) * cantURLXPage;
+                       int indiceFinal = Math.min(indiceIni + cantURLXPage, cantURLSCortas);
+
+
+
+
+                       modelo.put("titulo", "Lista de URLS");
+
+                       List<Acortador> misURLS = serviciosAcortador.findAll()
+                               .subList(indiceIni, indiceFinal)
+                               .stream()
+                               .filter(a -> a.getVisits_counter() >= 0)
+                               .toList();
+
+                       modelo.put("misUrls", misURLS);
+                       modelo.put("actualPage", actualPage);
+                       modelo.put("totalPages", totalPages);
+                       modelo.put("cantURLXPage", cantURLXPage);
+                       modelo.put("cantURLSCortas", cantURLSCortas);
+
+                       modelo.put("session", ctx.sessionAttributeMap());
+                       ctx.render("/templates/vista/listadoUrls.html", modelo);
+                   });
                });
            });
         });
