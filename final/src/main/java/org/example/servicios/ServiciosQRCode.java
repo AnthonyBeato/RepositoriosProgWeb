@@ -19,7 +19,7 @@ public class ServiciosQRCode {
     public void generateQRCode(Context ctx, String shortUrl) {
         int qrCodeSize = 250;
         String fileType = "png";
-        String baseUrl = "https://localhost:7000/"; // Reemplaza esto con la URL base de tu proyecto
+        String baseUrl = "https://localhost:7000/";
 
         Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);

@@ -27,24 +27,25 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead class="thead-light">
-                            <tr>
-                                <th scope="col"> URL Acortado </th>
-                                <th scope="col"> URL Original </th>
-                                <th scope="col"> Fecha creacion </th>
-                                <th scope="col"> Cantidad visitas </th>
-                                <th scope="col"> QR Code </th>
-                            </tr>
+                        <tr>
+                            <th scope="col"> URL Acortado </th>
+                            <th scope="col"> URL Original </th>
+                            <th scope="col"> Fecha creacion </th>
+                            <th scope="col"> Cantidad visitas </th>
+                            <th scope="col"> QR Code </th> <!-- Nueva columna -->
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="url : ${misUrls}">
-                                <td th:text="${url.URLAcortado}"></td>
-                                <td th:text="${url.URLOriginal}"></td>
-                                <td th:text="${url.created_date_time}"></td>
-                                <td th:text="${url.visits_counter}"></td>
-                                <td>
-                                    <a href="/qr-code/${url.URLAcortado}" target="_blank">Mostrar QR</a>
-                                </td>
-                            </tr>
+                        <tr th:each="url : ${misUrls}">
+                            <td th:text="${url.URLAcortado}"></td>
+                            <td th:text="${url.URLOriginal}"></td>
+                            <td th:text="${url.created_date_time}"></td>
+                            <td th:text="${url.visits_counter}"></td>
+                            <td>
+                                <a th:href="@{/qr-code/{urlAcortado}(urlAcortado=${url.URLAcortado})}" target="_blank">Mostrar QR</a>
+
+                            </td>
+                        </tr>
                         </tbody>
                         <tfoot>
                         <tr>

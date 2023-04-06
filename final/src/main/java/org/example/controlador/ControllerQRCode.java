@@ -12,8 +12,8 @@ public class ControllerQRCode extends ControllerBase {
 
     @Override
     public void aplicarDireccionamiento() {
-        app.get("/qr-code/{shortUrl}", ctx -> {
-            String shortUrl = ctx.pathParam("shortUrl");
+        app.get("/qr-code/{url_acortada}", ctx -> {
+            String shortUrl = ctx.pathParam("url_acortada");
             new ServiciosQRCode().generateQRCode(ctx, shortUrl);
         });
     }
