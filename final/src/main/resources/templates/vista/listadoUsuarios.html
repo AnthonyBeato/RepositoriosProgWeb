@@ -38,15 +38,27 @@
                         <tr th:each="user : ${usuarios}">
                             <td th:text="${user.nombre}"></td>
                             <td th:text="${user.usuario}"></td>
+                            <td th:text="${user.isAdmin}"></td>
                             <td>
-                                <form method="post" th:action="'/HacerAdmin/' + ${user.idUsuario}">
-                                    <input type="checkbox" th:checked="${user.isAdmin}">
-                                </form>
-                            </td>
-                            <td>
-                                <form method="post" th:action="'/Usuarios/Eliminar/' + ${user.idUsuario}" >
-                                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
-                                </form>
+                                <div class="ml-3">
+                                    <form method="post" th:action="'/Usuarios/HacerAdmin/' + ${user.idUsuario}">
+                                        <div th:if="${user.isAdmin == true}">
+                                            <div th:unless="${user.usuario eq 'admin'}">
+                                                <button type="submit" class="btn btn-outline-warning">Quitar admin</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:unless="${user.isAdmin == true}">
+                                            <button type="submit" class="btn btn-outline-primary">Hacer admin</button>
+                                        </div>
+                                    </form>
+
+                                    <form method="post" th:action="'/Usuarios/Eliminar/' + ${user.idUsuario}" >
+                                        <div th:unless="${user.usuario eq 'admin'}">
+                                            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         </tbody>

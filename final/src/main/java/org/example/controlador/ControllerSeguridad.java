@@ -160,7 +160,14 @@ public class ControllerSeguridad extends ControllerBase {
                 });
 
                 post("/HacerAdmin/{idUsuario}", ctx -> {
+                    Map<String, Object> modelo = new HashMap<>();
+                    String identificador = ctx.pathParam("idUsuario");
+                    Usuario usuario = serviciosUsuario.getUsuarioByID(identificador);
 
+                    usuario.setAdmin(!(usuario.isAdmin()));
+
+                    serviciosUsuario.editar(usuario);
+                    ctx.redirect("/Usuarios/Listado");
                 });
             });
         });
