@@ -11,6 +11,10 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
 
     private static ServiciosUsuario instancia;
 
+    public static void setInstancia(ServiciosUsuario instancia) {
+        ServiciosUsuario.instancia = instancia;
+    }
+
     public ServiciosUsuario() {
         super(Usuario.class);
         EntityManager em = getEntityManager();

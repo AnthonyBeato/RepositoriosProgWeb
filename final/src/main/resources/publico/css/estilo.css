@@ -8,6 +8,15 @@ header{
     padding: 10px;
 }
 
+header span{
+    color: white;
+}
+
+.container-usuario{
+    margin-right: 10px;
+    padding: 10px;
+}
+
 footer{
     background-color: #272836;
     color: white;

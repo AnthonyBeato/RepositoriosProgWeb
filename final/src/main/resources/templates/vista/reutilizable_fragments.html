@@ -21,7 +21,7 @@
             <a href="/login" class="btn btn-outline-light me-2">Iniciar sesion</a>
             <a href="/registrar" class="btn btn-warning">Registrar</a>
           </div>
-          <div th:if="${session.usuario != null}">
+          <div class="container-usuario" th:if="${session.usuario != null}">
             <span th:text="${session.usuario.usuario}" class="ml-10"></span>
             <a href="/logout" class="btn btn-outline-danger mr-10">Logout</a>
           </div>
