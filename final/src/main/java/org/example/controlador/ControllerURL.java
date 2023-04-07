@@ -30,7 +30,6 @@ public class ControllerURL extends ControllerBase {
                     Map<String, Object> modelo = new HashMap<>();
                     Usuario usuario = ctx.sessionAttribute("usuario");
 
-
                     int actualPage = 1;
                     String page = ctx.req().getParameter("page");
                     if(page != null){

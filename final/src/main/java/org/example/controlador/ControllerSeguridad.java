@@ -3,11 +3,14 @@ package org.example.controlador;
 import Utilidad.ControllerBase;
 import io.javalin.Javalin;
 import jakarta.servlet.http.HttpSession;
+import org.example.encapsulacion.Acortador;
 import org.example.encapsulacion.Usuario;
+import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosUsuario;
 import org.jasypt.util.text.AES256TextEncryptor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -129,12 +132,34 @@ public class ControllerSeguridad extends ControllerBase {
                 get("/Listado", ctx -> {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Lista de Usuarios");
+                    List<Usuario> lista = serviciosUsuario.findAll();
+                    modelo.put("usuarios", lista);
+                    modelo.put("session", ctx.sessionAttributeMap());
+                    Usuario usuario = ctx.sessionAttribute("usuario");
+                    modelo.put("usuario", usuario);
+
 
 
                     ctx.render("/templates/vista/listadoUsuarios.html", modelo);
                 });
 
                 post("/Eliminar/{idUsuario}", ctx -> {
+                    String identificador = ctx.pathParam("idUsuario");
+
+                    //Eliminar de la BD
+                    Usuario usuario = serviciosUsuario.getUsuarioByID(identificador);
+                    for (Acortador acortado : ServiciosAcortador.getInstancia().findAllByUser(usuario)) {
+                        if(acortado != null){
+                            ServiciosAcortador.getInstancia().eliminar(acortado.getIdAcortador());
+                        }
+                    }
+                    serviciosUsuario.eliminar(identificador);
+                    System.out.println("          Se elimino :" + identificador);
+
+                    ctx.redirect("/Usuarios/Listado");
+                });
+
+                post("/HacerAdmin/{idUsuario}", ctx -> {
 
                 });
             });

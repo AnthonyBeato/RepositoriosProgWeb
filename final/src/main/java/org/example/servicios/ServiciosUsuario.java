@@ -58,6 +58,16 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
         return list.get(0);
     }
 
+    public Usuario getUsuarioByID(String id){
+
+        for (Usuario usuario : findAll()){
+            if (usuario.getIdUsuario().equals(id)){
+                return usuario;
+            }
+        }
+        return null;
+    }
+
     public List<Usuario> findAll(){
         EntityManager em = getEntityManager();
         Query query = em.createNativeQuery("select * from Usuario ", Usuario.class);

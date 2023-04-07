@@ -15,7 +15,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <header th:include="templates/vista/reutilizable_fragments.html :: header"></header>
+        <header th:insert="~{templates/vista/reutilizable_fragments.html :: header}"></header>
     </div>
 
     <div class="container-fluid">
@@ -87,7 +87,7 @@
     </script>
 
     <div class="row">
-        <footer th:include="templates/vista/reutilizable_fragments.html :: footer"></footer>
+        <footer th:insert="~{templates/vista/reutilizable_fragments.html :: footer}"></footer>
     </div>
 </div>
 

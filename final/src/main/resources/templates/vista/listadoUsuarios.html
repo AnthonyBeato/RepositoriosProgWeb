@@ -13,7 +13,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <header th:include="templates/vista/reutilizable_fragments.html :: header"></header>
+            <header th:insert="~{templates/vista/reutilizable_fragments.html :: header}"></header>
         </div>
 
         <div class="row">
@@ -28,60 +28,35 @@
                     <table class="table table-striped table-bordered">
                         <thead class="thead-light">
                         <tr>
-                            <th scope="col"> URL Acortado </th>
-                            <th scope="col"> URL Original </th>
-                            <th scope="col"> Fecha creacion </th>
-                            <th scope="col"> Cantidad visitas </th>
-                            <th scope="col"> QR Code </th> <!-- Nueva columna -->
+                            <th scope="col"> Nombre y apellido </th>
+                            <th scope="col"> Usuario </th>
+                            <th scope="col"> Administrador </th>
+                            <th scope="col"> Accion </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="url : ${misUrls}">
-                            <td th:text="${url.URLAcortado}"></td>
-                            <td th:text="${url.URLOriginal}"></td>
-                            <td th:text="${url.created_date_time}"></td>
-                            <td th:text="${url.visits_counter}"></td>
+                        <tr th:each="user : ${usuarios}">
+                            <td th:text="${user.nombre}"></td>
+                            <td th:text="${user.usuario}"></td>
                             <td>
-                                <a th:href="@{/qr-code/{urlAcortado}(urlAcortado=${url.URLAcortado})}" target="_blank">Mostrar QR</a>
-
+                                <form method="post" th:action="'/HacerAdmin/' + ${user.idUsuario}">
+                                    <input type="checkbox" th:checked="${user.isAdmin}">
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" th:action="'/Usuarios/Eliminar/' + ${user.idUsuario}" >
+                                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="5"> <!-- Colspan 3 para que ocupe las tres columnas de la tabla -->
-                                <div class="row">
-                                    <nav aria-label="Page navigation">
-                                        <nav>
-                                            <ul class="pagination justify-content-end">
-                                                <li class="page-item" th:classappend="${actualPage == 1} ? 'disabled' : ''">
-                                                    <a class="page-link" th:href="'/?page=' + ${actualPage - 1}" tabindex="-1">Anterior</a>
-                                                </li>
-
-                                                <li class="page-item" th:classappend="${page == actualPage} ? 'selected' : ''" th:each="page : ${#numbers.sequence(actualPage - 2, actualPage + 2)}"
-                                                    th:if="${page > 0 && page <= totalPages}">
-                                                    <a class="page-link" th:href="${'/?page=' + page}" th:text="${page}"></a>
-                                                </li>
-
-                                                <li class="page-item">
-                                                    <a class="page-link" th:classappend="${actualPage == totalPages} ? 'disabled' : ''"
-                                                       th:href="'/?page=' + ${actualPage + 1}">Siguiente</a>
-                                                </li>
-
-                                            </ul>
-                                        </nav>
-                                    </nav>
-                                </div>
-                            </td>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <footer th:include="templates/vista/reutilizable_fragments.html :: footer"></footer>
+            <footer th:insert="~{templates/vista/reutilizable_fragments.html :: footer}"></footer>
         </div>
     </div>
 
