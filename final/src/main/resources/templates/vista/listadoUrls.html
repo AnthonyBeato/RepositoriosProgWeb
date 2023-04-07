@@ -11,11 +11,11 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="row">
-        <header th:include="templates/vista/reutilizable_fragments.html :: header"></header>
-    </div>
-
     <div class="container-fluid">
+        <div class="row">
+            <header th:include="templates/vista/reutilizable_fragments.html :: header"></header>
+        </div>
+
         <div class="row">
             <h1 class="text-center mt-5">
                 Listado URLS
@@ -79,10 +79,10 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <footer th:include="templates/vista/reutilizable_fragments.html :: footer"></footer>
+        <div class="row">
+            <footer th:include="templates/vista/reutilizable_fragments.html :: footer"></footer>
+        </div>
     </div>
 
 </body>

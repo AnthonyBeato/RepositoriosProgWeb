@@ -26,8 +26,9 @@ public class ControllerSeguridad extends ControllerBase {
             path("/registrar", () -> {
                 get(ctx -> {
                     Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Registrar");
 
-                    ctx.render("/templates/vista/registrar.html");
+                    ctx.render("/templates/vista/registrar.html", modelo);
                 });
                 post(ctx -> {
                     String nombre = ctx.formParam("nombre");
@@ -70,7 +71,8 @@ public class ControllerSeguridad extends ControllerBase {
                         ctx.redirect("/Seguridad/Productos");
                     }
                     Map<String, Object> modelo = new HashMap<>();
-                    ctx.render("/templates/vista/login.html");
+                    modelo.put("titulo", "Login");
+                    ctx.render("/templates/vista/login.html", modelo);
                 });
             });
         });
