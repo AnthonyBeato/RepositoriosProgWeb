@@ -24,10 +24,10 @@
             <form action="/acortar" method="post">
                 <div class="row">
                     <div class="col-md-6 offset-2">
-                        <input type="url" name="url_original" class="form-control" id="exampleFormControlInput1" placeholder="Acortar tu link">
+                        <input type="url" name="url_original" class="form-control" id="dominio" placeholder="Acortar tu link">
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-warning">Acortar</button>
+                        <button type="submit" class="btn btn-warning" id="submit">Acortar</button>
                     </div>
                 </div>
             </form>
@@ -40,12 +40,54 @@
 
             <a class="btn btn-warning" th:href="'/'+ ${url_acortada}">Enlace</a>
 
+            <div class="col">
+                <div class="card" style="width: 100%; min-height: 300px; max-height: 300px; text-align: justify;">
+                    <div class="card-body">
+                        <img id="myimage" style="max-width: 150px; min-width: 150px;" class="card-img-top">
+                        <div class="is-clipped">
+                            <h5 class="card-title" id="mytitle"></h5>
+                            <p id="mydescription" class="card-text"></p>
+                            <a href="#" id="myurl" class="card-link"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        const functionDomain = () => {
+            var data = {key: '37dc829dd6caa19d224b29dfdc36f8f4', q: document.getElementById("dominio").value}
+            fetch('https://api.linkpreview.net', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            })
+                .then(res => res.json())
+                .then(response => {
+                    if(response.error) {
+                        console.log("ERROR")
+                        document.getElementById("submit").disabled  = true
+                    } else {
+                        document.getElementById("submit").disabled  = false
+                    }
+                    document.getElementById("mytitle").innerHTML = response.title
+                    document.getElementById("mydescription").innerHTML = response.description
+                    document.getElementById("myimage").src = response.image
+                    document.getElementById("myurl").innerHTML = response.url
+                    document.getElementById("myurl").href = response.url
+                })
+        }
+        document.getElementById("dominio").addEventListener("change", functionDomain);
+    </script>
 
     <div class="row">
         <footer th:include="templates/vista/reutilizable_fragments.html :: footer"></footer>
     </div>
 </div>
+
 </body>
 </html>
