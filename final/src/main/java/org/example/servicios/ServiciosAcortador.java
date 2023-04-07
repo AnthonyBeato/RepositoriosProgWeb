@@ -3,6 +3,7 @@ package org.example.servicios;
 import org.example.BaseDatos.GestionBD;
 import org.example.encapsulacion.Acortador;
 import org.example.encapsulacion.URL;
+import org.example.encapsulacion.Usuario;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -36,6 +37,15 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
         EntityManager em = getEntityManager();
         Query query = em.createNativeQuery("select * from Acortador ", Acortador.class);
         List<Acortador> list = query.getResultList();
+        return list;
+    }
+
+    public List<Acortador> findAllByUser(Usuario usuario){
+        EntityManager em = getEntityManager();
+        Query query = em.createNativeQuery("select a.* from Acortador a WHERE a.usuario = :usuario", Acortador.class);
+        query.setParameter("usuario", usuario);
+        List<Acortador> list = query.getResultList();
+
         return list;
     }
 

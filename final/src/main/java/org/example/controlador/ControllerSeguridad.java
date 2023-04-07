@@ -123,5 +123,21 @@ public class ControllerSeguridad extends ControllerBase {
                 });
             });
         });
+
+        app.routes(() -> {
+            path("/Usuarios", () -> {
+                get("/Listado", ctx -> {
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Lista de Usuarios");
+
+
+                    ctx.render("/templates/vista/listadoUsuarios.html", modelo);
+                });
+
+                post("/Eliminar/{idUsuario}", ctx -> {
+
+                });
+            });
+        });
     }
 }

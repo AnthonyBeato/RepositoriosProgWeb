@@ -20,23 +20,35 @@ public class Acortador {
     private LocalDateTime created_date_time;
     @Column(name = "visits_counter")
     private int visits_counter;
-    @Column(name = "usuario_agente")
-    private String usuario_agente;
+    @Column(name = "agente_cliente")
+    private String agente_cliente;
     @Column(name = "ip_address")
     private String ip_address;
+    @ManyToOne
+    @JoinColumn(name = "usuario")
+    private Usuario usuario;
 
-    public Acortador(String URLAcortado, URL URLOriginal, LocalDateTime created_date_time, int visits_counter, String usuario_agente, String ip_address) {
+    public Acortador(String URLAcortado, URL URLOriginal, LocalDateTime created_date_time, int visits_counter, String agente_cliente, String ip_address, Usuario usuario) {
         this.idAcortador = UUID.randomUUID().toString();
         this.URLAcortado = URLAcortado;
         this.URLOriginal = URLOriginal;
         this.created_date_time = created_date_time;
         this.visits_counter = visits_counter;
-        this.usuario_agente = usuario_agente;
+        this.agente_cliente = agente_cliente;
         this.ip_address = ip_address;
+        this.usuario = usuario;
     }
 
     public Acortador() {
 
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getIdAcortador() {
@@ -79,12 +91,12 @@ public class Acortador {
         this.visits_counter = visits_counter;
     }
 
-    public String getUsuario_agente() {
-        return usuario_agente;
+    public String getAgente_cliente() {
+        return agente_cliente;
     }
 
-    public void setUsuario_agente(String usuario_agente) {
-        this.usuario_agente = usuario_agente;
+    public void setAgente_cliente(String usuario_agente) {
+        this.agente_cliente = usuario_agente;
     }
 
     public String getIp_address() {
