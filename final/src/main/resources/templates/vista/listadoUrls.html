@@ -32,7 +32,10 @@
                             <th scope="col"> URL Original </th>
                             <th scope="col"> Fecha creacion </th>
                             <th scope="col"> Cantidad visitas </th>
-                            <th scope="col"> QR Code </th> <!-- Nueva columna -->
+                            <th scope="col"> Cliente del usuario </th>
+                            <th scope="col"> Direccion IP </th>
+                            <th scope="col"> QR Code </th>
+                            <th scope="col"> Estadisticas </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -41,15 +44,20 @@
                             <td th:text="${url.URLOriginal.URLOriginal}"></td>
                             <td th:text="${url.created_date_time}"></td>
                             <td th:text="${url.visits_counter}"></td>
+                            <td th:text="${url.agente_cliente}"></td>
+                            <td th:text="${url.ip_address}"></td>
                             <td>
                                 <a th:href="@{/qr-code/{urlAcortado}(urlAcortado=${url.URLAcortado})}" target="_blank">Mostrar QR</a>
 
+                            </td>
+                            <td>
+                                <a th:href="'/Seguridad/URL/' + ${url.idAcortador}">Ver mas</a>
                             </td>
                         </tr>
                         </tbody>
                         <tfoot>
                         <tr>
-                            <td colspan="5"> <!-- Colspan 3 para que ocupe las tres columnas de la tabla -->
+                            <td colspan="8"> <!-- Colspan 3 para que ocupe las tres columnas de la tabla -->
                                 <div class="row">
                                     <nav aria-label="Page navigation">
                                         <nav>
