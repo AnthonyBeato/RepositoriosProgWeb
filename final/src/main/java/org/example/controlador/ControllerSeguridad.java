@@ -62,7 +62,6 @@ public class ControllerSeguridad extends ControllerBase {
                         AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
                         textEncryptor.setPassword("$2a$12$iDaIfhy8y7o12l4t9VEEEuPr6NG1iR/cplWVv1NATWVc2N/0L/722");
                         String username = textEncryptor.decrypt(data);
-                        //Usuario tmp = serviciosUsuario.getInstancia().getUsuariotByUser(username);
                         Usuario tmp = serviciosUsuario.getInstancia().getUsuariotByUser(username);
                         if(tmp != null) {
                             usuario = tmp;
@@ -71,8 +70,9 @@ public class ControllerSeguridad extends ControllerBase {
                     }
 
                     if (usuario != null) {
-                        ctx.redirect("/Seguridad/Productos");
+                        ctx.redirect("/Seguridad/");
                     }
+
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Login");
                     ctx.render("/templates/vista/login.html", modelo);

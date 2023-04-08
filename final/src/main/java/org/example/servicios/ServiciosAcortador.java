@@ -9,12 +9,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class ServiciosAcortador extends GestionBD<Acortador> {
 
     private static ServiciosAcortador instancia;
+
+    public List<Acortador> listaAcortadoresParaNoRegistrados = new ArrayList<>();
 
     public ServiciosAcortador() {
         super(Acortador.class);
@@ -131,4 +134,16 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
         }
     }
 
+
+    public List<Acortador> cambiarURLSAUsuario(Usuario usuario){
+        List<Acortador> lista = listaAcortadoresParaNoRegistrados;
+
+        for (Acortador acortador : lista) {
+            //System.out.println("  Usuario anterior: "+ acortador.getUsuario().getUsuario());
+            acortador.setUsuario(usuario);
+            System.out.println("  Se pasó el url: " + acortador.getURLOriginal().getURLOriginal() + "al usuario: " + acortador.getUsuario().getUsuario());
+        }
+
+        return lista;
+    }
 }

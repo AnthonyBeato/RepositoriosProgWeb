@@ -13,16 +13,14 @@ import org.example.servicios.ServiciosUsuario;
 import javax.xml.crypto.Data;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class ControllerAcortador extends ControllerBase {
 
     ServiciosAcortador serviciosAcortador = ServiciosAcortador.getInstancia();
+
 
     public ControllerAcortador(Javalin app) {
         super(app);
@@ -37,6 +35,28 @@ public class ControllerAcortador extends ControllerBase {
 
                     modelo.put("titulo", "Acortador de links");
                     modelo.put("session", ctx.sessionAttributeMap());
+
+                    Usuario usuario = ctx.sessionAttribute("usuario");
+                    if(usuario != null){
+                        //Mandar listado de url desde fuera de la sesion, para ponerlo en la sesión.
+
+                        List<Acortador> lista = serviciosAcortador.cambiarURLSAUsuario(usuario);
+                        for (Acortador acortador: lista) {
+
+                            if(serviciosAcortador.find(acortador.getIdAcortador()) != null){
+                                ServiciosURL.getInstancia().editar(acortador.getURLOriginal());
+                                serviciosAcortador.editar(acortador);
+                            }else{
+                                ServiciosURL.getInstancia().crear(acortador.getURLOriginal());
+                                serviciosAcortador.crear(acortador);
+                            }
+
+                            System.out.println("El link: " + acortador.getURLOriginal() + "se le paso al usuario: " + acortador.getUsuario().getUsuario());
+                        }
+                    }
+                    modelo.put("usuario", usuario);
+
+
                     ctx.render("/templates/vista/index.html", modelo);
                 });
 
@@ -52,9 +72,13 @@ public class ControllerAcortador extends ControllerBase {
                     LocalDateTime dateTime = LocalDateTime.now();
 
                     Acortador acortador = new Acortador(URLAcortada, url, dateTime, 0, userAgent, ipAddress, usuario);
-                    ServiciosURL.getInstancia().crear(url);
-                    ServiciosAcortador.getInstancia().crear(acortador);
 
+                    if(usuario == null){
+                        serviciosAcortador.listaAcortadoresParaNoRegistrados.add(acortador);
+                    }else{
+                        ServiciosURL.getInstancia().crear(url);
+                        ServiciosAcortador.getInstancia().crear(acortador);
+                    }
 
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Acortador de links");

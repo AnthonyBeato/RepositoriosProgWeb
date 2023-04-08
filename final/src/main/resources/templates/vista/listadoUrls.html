@@ -38,7 +38,7 @@
                         <tbody>
                         <tr th:each="url : ${misUrls}">
                             <td th:text="${url.URLAcortado}"></td>
-                            <td th:text="${url.URLOriginal}"></td>
+                            <td th:text="${url.URLOriginal.URLOriginal}"></td>
                             <td th:text="${url.created_date_time}"></td>
                             <td th:text="${url.visits_counter}"></td>
                             <td>
