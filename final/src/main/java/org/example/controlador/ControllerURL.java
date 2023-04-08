@@ -88,6 +88,10 @@ public class ControllerURL extends ControllerBase {
                 get("/{idURL}", ctx -> {
 
                 });
+
+                get("/Administrar", ctx -> {
+
+                });
             });
         });
 
