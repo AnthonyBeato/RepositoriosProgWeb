@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class ServiciosAcortador extends GestionBD<Acortador> {
 
@@ -62,6 +63,19 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
     }
 
 
+    public Acortador findByOriginalUrlAndUser(String originalUrl, Usuario usuario) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNativeQuery("SELECT a.* FROM Acortador a WHERE a.url_original = :originalUrl AND a.usuario = :usuario", Acortador.class);
+        query.setParameter("originalUrl", originalUrl);
+        query.setParameter("usuario", usuario);
+        List<Acortador> list = query.getResultList();
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
 
 
     public Acortador findByShortUrl(String URLAcortado){
@@ -101,16 +115,21 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
             shortUrl.insert(0, '0');
         }
 
-        // Check if short URL already exists
-        Acortador existingUrl = ServiciosAcortador.getInstancia().findByShortUrl(shortUrl.toString());
-        if (existingUrl != null) {
-            // Short URL already exists, generate a new one
-            return generateURLCorta(URLOriginal);
-        }
+        // Add a random suffix to the short URL
+        String suffix = UUID.randomUUID().toString().substring(0, 4);
+        shortUrl.append(suffix);
+
+//        // Check if short URL already exists
+//        Acortador existingUrl = ServiciosAcortador.getInstancia().findByShortUrl(shortUrl.toString());
+//        if (existingUrl != null) {
+//            // Short URL already exists, generate a new one
+//            return generateURLCorta(URLOriginal);
+//        }
 
         // Short URL is unique, return it
         return shortUrl.toString();
     }
+
 
     public void incrementarContadorVisitas(Acortador acortador) {
         int visitasActuales = acortador.getVisits_counter();

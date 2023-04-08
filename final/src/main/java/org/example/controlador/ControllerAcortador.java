@@ -39,10 +39,8 @@ public class ControllerAcortador extends ControllerBase {
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     if(usuario != null){
                         //Mandar listado de url desde fuera de la sesion, para ponerlo en la sesión.
-
                         List<Acortador> lista = serviciosAcortador.cambiarURLSAUsuario(usuario);
                         for (Acortador acortador: lista) {
-
                             if(serviciosAcortador.find(acortador.getIdAcortador()) != null){
                                 ServiciosURL.getInstancia().editar(acortador.getURLOriginal());
                                 serviciosAcortador.editar(acortador);
@@ -53,6 +51,7 @@ public class ControllerAcortador extends ControllerBase {
 
                             System.out.println("El link: " + acortador.getURLOriginal() + "se le paso al usuario: " + acortador.getUsuario().getUsuario());
                         }
+                        serviciosAcortador.listaAcortadoresParaNoRegistrados.clear();
                     }
                     modelo.put("usuario", usuario);
 
@@ -65,7 +64,13 @@ public class ControllerAcortador extends ControllerBase {
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     URL url = new URL(URLOriginal, usuario);
 
-                    String URLAcortada = ServiciosAcortador.getInstancia().generateURLCorta(URLOriginal);
+                    String URLAcortada = "";
+                    Acortador temp = serviciosAcortador.findByOriginalUrlAndUser(URLOriginal, usuario);
+                    if (temp != null) {
+                        URLAcortada = temp.getURLAcortado();
+                    } else {
+                        URLAcortada = ServiciosAcortador.getInstancia().generateURLCorta(URLOriginal);
+                    }
 
                     String userAgent = ctx.userAgent();
                     String ipAddress = ctx.ip();
@@ -74,10 +79,28 @@ public class ControllerAcortador extends ControllerBase {
                     Acortador acortador = new Acortador(URLAcortada, url, dateTime, 0, userAgent, ipAddress, usuario);
 
                     if(usuario == null){
-                        serviciosAcortador.listaAcortadoresParaNoRegistrados.add(acortador);
+                        boolean encontrado = false;
+                        for (Acortador aux: serviciosAcortador.listaAcortadoresParaNoRegistrados) {
+                            if(Objects.equals(aux.getURLOriginal().getURLOriginal(), acortador.getURLOriginal().getURLOriginal())){
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        if (!encontrado) {
+                            serviciosAcortador.listaAcortadoresParaNoRegistrados.add(acortador);
+                        }
                     }else{
-                        ServiciosURL.getInstancia().crear(url);
-                        ServiciosAcortador.getInstancia().crear(acortador);
+                        boolean encontrado = false;
+                        for (Acortador aux: serviciosAcortador.findAllByUser(usuario)) {
+                            if(Objects.equals(aux.getURLOriginal().getURLOriginal(), acortador.getURLOriginal().getURLOriginal())){
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        if (!encontrado) {
+                            ServiciosURL.getInstancia().crear(url);
+                            ServiciosAcortador.getInstancia().crear(acortador);
+                        }
                     }
 
                     Map<String, Object> modelo = new HashMap<>();
