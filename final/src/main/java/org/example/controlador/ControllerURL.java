@@ -7,6 +7,8 @@ import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosURL;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,8 +87,38 @@ public class ControllerURL extends ControllerBase {
             });
 
             path("/Seguridad/URL", () ->{
-                get("/{idURL}", ctx -> {
-                    ctx.render("/templates/vista/detalleURL.html");
+                get("/{idAcortador}", ctx -> {
+                    Map<String, Object> modelo = new HashMap<>();
+                    Acortador urlAcortada = serviciosAcortador.find(ctx.pathParam("idAcortador"));
+                    modelo.put("idAcortador", urlAcortada.getIdAcortador());
+                    modelo.put("url_original", urlAcortada.getURLOriginal());
+                    modelo.put("url_acortada", urlAcortada.getURLAcortado());
+
+                    // Crear lista de etiquetas y datos para el grafico de barras
+                    List<Acortador> acortadores = serviciosAcortador.findAll();
+                    List<String> labels = new ArrayList<>();
+                    List<Integer> data = new ArrayList<>();
+                    for (Acortador acortador : acortadores) {
+                        List<LocalDateTime> fechasAcceso = acortador.getFechasAcceso();
+                        for (LocalDateTime fecha : fechasAcceso) {
+                            String label = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+                            if (!labels.contains(label)) {
+                                labels.add(label);
+                                data.add(1);
+                            } else {
+                                int index = labels.indexOf(label);
+                                data.set(index, data.get(index) + 1);
+                            }
+                        }
+                    }
+
+                    modelo.put("acortadores", acortadores);
+                    modelo.put("labels", labels);
+                    modelo.put("data", data);
+
+                    //Guardar el nombre de Usuario en header
+                    modelo.put("session", ctx.sessionAttributeMap());
+                    ctx.render("/templates/vista/detalleURL.html", modelo);
                 });
 
                 get("/Administrar", ctx -> {

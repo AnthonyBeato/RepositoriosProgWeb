@@ -115,12 +115,23 @@ public class ControllerAcortador extends ControllerBase {
 
                 get("/{url_acortada}", ctx -> {
                     Acortador acortador = ServiciosAcortador.getInstancia().findByShortUrl(ctx.pathParam("url_acortada"));
+                    String userAgent = ctx.userAgent();
+                    String ipAddress = ctx.ip();
+                    LocalDateTime dateTime = LocalDateTime.now();
 
                     if(acortador == null){
                         ctx.status(HttpStatus.NOT_FOUND_404).result("Pagina no encontrada");
                     }else{
                         ServiciosAcortador.getInstancia().incrementarContadorVisitas(acortador);
                         ServiciosAcortador.getInstancia().actualizarAcortador(acortador);
+                        acortador.agregarAgenteUsuario(userAgent);
+                        acortador.agregarDireccionIP(ipAddress);
+                        acortador.agregarFechaAcceso(dateTime);
+                        serviciosAcortador.editar(acortador);
+                        System.out.println("   agente del usuario: "  + userAgent);
+                        System.out.println("     ip: " + ipAddress);
+                        System.out.println("    fecha: " + dateTime);
+
                         System.out.println(acortador.getURLOriginal().getURLOriginal());
                         ctx.redirect(acortador.getURLOriginal().getURLOriginal());
                     }
