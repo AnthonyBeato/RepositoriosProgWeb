@@ -4,6 +4,7 @@ import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsContext;
 import org.example.encapsulacion.Usuario;
 
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ComentarioWebSocket {

@@ -32,8 +32,9 @@ import org.eclipse.jetty.websocket.api.Session;
 
 public class Main {
     private static final Map<String, WsConnectContext> users = new ConcurrentHashMap<>();
+    private static final List<WsContext> anonymousUsers = new ArrayList<>();
     private static String connectionMethod = "";
-    public static List<Session> usuariosConectados = new ArrayList<>();
+
 
     public static void main(String[] args) throws IOException {
 
@@ -96,8 +97,10 @@ public class Main {
                 String userId = getUserIdFromSession(ctx);
                 if (userId != null) {
                     users.put(userId, ctx);
-                    broadcastUserCount();
+                } else {
+                    anonymousUsers.add(ctx);
                 }
+                broadcastUserCount();
             });
 
             ws.onClose(ctx -> {
@@ -105,8 +108,10 @@ public class Main {
                 String userId = getUserIdFromSession(ctx);
                 if (userId != null) {
                     users.remove(userId);
-                    broadcastUserCount();
+                } else {
+                    anonymousUsers.remove(ctx);
                 }
+                broadcastUserCount();
             });
 
             ws.onError(ctx -> {
@@ -128,8 +133,31 @@ public class Main {
     }
 
     private static void broadcastUserCount() {
+        int totalUsers = users.size() + anonymousUsers.size();
+        String userCount = Integer.toString(totalUsers);
+
         users.values().forEach(user -> {
-            user.send(Integer.toString(users.size()));
+            if (user.session.isOpen()) {
+                user.send(userCount);
+            }
+        });
+
+        anonymousUsers.removeIf(user -> !user.session.isOpen());
+        anonymousUsers.forEach(user -> {
+            user.send(userCount);
+        });
+    }
+
+    private static void broadcastMessage(String message) {
+        users.values().forEach(user -> {
+            if (user.session.isOpen()) {
+                user.send(message);
+            }
+        });
+
+        anonymousUsers.removeIf(user -> !user.session.isOpen());
+        anonymousUsers.forEach(user -> {
+            user.send(message);
         });
     }
 
