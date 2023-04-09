@@ -161,6 +161,7 @@ public class Main {
         });
     }
 
+
     public static String getConnectionMethod(){
         return connectionMethod;
     }
