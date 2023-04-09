@@ -86,7 +86,7 @@ public class ControllerURL extends ControllerBase {
 
             path("/Seguridad/URL", () ->{
                 get("/{idURL}", ctx -> {
-
+                    ctx.render("/templates/vista/detalleURL.html");
                 });
 
                 get("/Administrar", ctx -> {
