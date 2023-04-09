@@ -88,6 +88,16 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
         return null;
     }
 
+    public Acortador findByShortUrlNoRegistrados(String URLAcortado){
+
+        for (Acortador acortado : listaAcortadoresParaNoRegistrados){
+            if (acortado.getURLAcortado().equals(URLAcortado)){
+                return acortado;
+            }
+        }
+        return null;
+    }
+
     public String generateURLCorta(String URLOriginal){
         String base62 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder shortUrl = new StringBuilder();

@@ -114,7 +114,13 @@ public class ControllerAcortador extends ControllerBase {
                 });
 
                 get("/{url_acortada}", ctx -> {
-                    Acortador acortador = ServiciosAcortador.getInstancia().findByShortUrl(ctx.pathParam("url_acortada"));
+                    Usuario usuario = ctx.sessionAttribute("usuario");
+                    Acortador acortador = new Acortador();
+                    if(usuario == null){
+                        acortador = ServiciosAcortador.getInstancia().findByShortUrlNoRegistrados(ctx.pathParam("url_acortada"));
+                    }else{
+                        acortador = ServiciosAcortador.getInstancia().findByShortUrl(ctx.pathParam("url_acortada"));
+                    }
                     String userAgent = ctx.userAgent();
                     String ipAddress = ctx.ip();
                     LocalDateTime dateTime = LocalDateTime.now();
@@ -123,11 +129,13 @@ public class ControllerAcortador extends ControllerBase {
                         ctx.status(HttpStatus.NOT_FOUND_404).result("Pagina no encontrada");
                     }else{
                         ServiciosAcortador.getInstancia().incrementarContadorVisitas(acortador);
-                        ServiciosAcortador.getInstancia().actualizarAcortador(acortador);
+                        //ServiciosAcortador.getInstancia().actualizarAcortador(acortador);
                         acortador.agregarAgenteUsuario(userAgent);
                         acortador.agregarDireccionIP(ipAddress);
                         acortador.agregarFechaAcceso(dateTime);
-                        serviciosAcortador.editar(acortador);
+                        if(usuario != null){
+                            serviciosAcortador.editar(acortador);
+                        }
                         System.out.println("   agente del usuario: "  + userAgent);
                         System.out.println("     ip: " + ipAddress);
                         System.out.println("    fecha: " + dateTime);
