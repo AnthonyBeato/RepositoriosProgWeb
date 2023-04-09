@@ -72,6 +72,7 @@ public class ControllerVentas extends ControllerBase {
         app.routes(() -> {
             path("/", () -> {
                 get("/dashboard", ctx -> {
+                    CarroCompras carroCompras = ctx.sessionAttribute("carroCompras");
                     List<VentaProductos> ventas = serviciosVentasProductos.obtenerVentas();
 
                     // Crear lista de etiquetas y datos para el piechart
@@ -94,6 +95,10 @@ public class ControllerVentas extends ControllerBase {
 //                    thymeleafContext.setVariable("labels", labels);
 //                    thymeleafContext.setVariable("data", data);
                     Map<String, Object> modelo = new HashMap<>();
+
+                    modelo.put("cantidadVentas", serviciosVentasProductos.obtenerVentas().size());
+                    modelo.put("cantidadProdCarrito", carroCompras.getCantidadCarroCompra());
+
 
                     modelo.put("labels", labels);
                     modelo.put("data", data);

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
@@ -29,43 +29,120 @@
             color: #212529;
           }
 
+          .nav-link{
+              color: #31d2f2;
+          }
+
           a:hover{
             color: #31d2f2;
           }
         </style>
 </head>
 <body>
-    <br>
-    <div class="text-center">
-        <h1>Dashboard administrativo</h1>
-    </div>
+    <header class="p-3 text-bg-dark">
+        <div class="container-fluid">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <img src="/images/logo-invertido.png" alt="logo-QuickBuy" class="logo">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        Ventas por producto
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/" class="nav-link px-4 text-info">Comprar</a></li>
+                    <li><a href="/Ventas" class="nav-link px-4 text-white">Ventas Realizadas</a></li>
+                    <li><a href="/Seguridad/Productos" class="nav-link px-4 text-white">Administrar Productos</a></li>
+                    <li><a href="/carritoCompras" class="nav-link px-4 text-white">Carrito (<span th:text="${cantidadProdCarrito}"></span>)</a></li>
+                </ul>
 
-                    <div id="prueba">
-                        <div th:each="label : ${labels}">
-                            <p th:text="${label}"></p>
-                        </div>
-                        <div th:each="value : ${data}">
-                            <p th:text="${value}"></p>
-                        </div>
+                <div class="text-end ml-3">
+
+                    <div th:if="${session.usuario == null}">
+                        <a href="/login" class="btn btn-outline-light me-2">Iniciar sesion</a>
+                        <a href="/registrar" class="btn btn-info">Registrar</a>
                     </div>
 
-
+                    <div th:if="${session.usuario != null}">
+                        <span th:text="${session.usuario.usuario}" class="ml-10"></span>
+                        <a href="/logout" class="btn btn-outline-danger mr-10">Logout</a>
                     </div>
                 </div>
             </div>
         </div>
+    </header>
+
+    <div class="row">
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse" id="sidebarMenu">
+                    <div class="position-sticky pt-3 sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home align-text-bottom" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v18h-6M10 17l5-5-5-5M13.8 12H3"/></svg>
+                                    Pagina principal
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard administrativo</h1>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-header">
+                                Cantidad de ventas
+                            </div>
+                            <div class="card-body">
+                                <span th:text="${cantidadVentas}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card mt-2">
+                        <div class="card-header">
+                            Ventas por producto
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                    </div>
+
+                    <h2 class="mt-5">Tabla de datos</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre producto</th>
+                                    <th scope="col">Cantidad de veces vendido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+<!--                            <tr th:each="label, value : ${labels}, ${data}">-->
+<!--                                <td th:text="${label}"></td>-->
+<!--                                <td th:text="${value}"></td>-->
+<!--                            </tr>-->
+                            <tr th:each="label, iter1 : ${labels}">
+                                <td th:text="${label}"></td>
+                                <td th:text="${data[iter1.count - 1]}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+
+            </div>
+        </div>
     </div>
+
 
     <!-- Incluye los recursos de Chart.js y Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
