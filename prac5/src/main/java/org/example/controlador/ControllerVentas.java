@@ -6,6 +6,8 @@ import org.example.encapsulacion.CarroCompras;
 import org.example.encapsulacion.Producto;
 import org.example.encapsulacion.Usuario;
 import org.example.encapsulacion.VentaProductos;
+import org.example.servicios.ServiciosProducto;
+import org.example.servicios.ServiciosUsuario;
 import org.example.servicios.ServiciosVentasProductos;
 import  org.example.BaseDatos.BDCockroach;
 import org.thymeleaf.context.Context;
@@ -98,6 +100,8 @@ public class ControllerVentas extends ControllerBase {
 
                     modelo.put("cantidadVentas", serviciosVentasProductos.obtenerVentas().size());
                     modelo.put("cantidadProdCarrito", carroCompras.getCantidadCarroCompra());
+                    modelo.put("cantidadProductosDisponibles", ServiciosProducto.getInstancia().findAll().size());
+                    modelo.put("cantidadUsuarios", ServiciosUsuario.getInstancia().findAll().size());
 
 
                     modelo.put("labels", labels);
