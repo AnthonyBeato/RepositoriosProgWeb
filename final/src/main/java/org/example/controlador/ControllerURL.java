@@ -102,22 +102,14 @@ public class ControllerURL extends ControllerBase {
                     List<Acortador> acortadores = serviciosAcortador.findAll();
                     List<String> labels = new ArrayList<>();
                     List<Integer> data = new ArrayList<>();
-                    List<String> ips = new ArrayList<>();
-                    List<String> agentes = new ArrayList<>();
 
                     for (Acortador acortador : acortadores) {
                         List<LocalDateTime> fechasAcceso = acortador.getFechasAcceso();
-                        List<String> direccionIP = acortador.getDireccionesIP();
-                        List<String> agenteUsuario = acortador.getAgentesUsuario();
-
-                        for (int i = 0; i < fechasAcceso.size(); i++) {
-                            LocalDateTime fecha = fechasAcceso.get(i);
-                            String label = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+                        for (LocalDateTime fecha : fechasAcceso) {
+                            String label = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH"));
                             if (!labels.contains(label)) {
                                 labels.add(label);
                                 data.add(1);
-                                ips.add(direccionIP.get(i));
-                                agentes.add(agenteUsuario.get(i));
                             } else {
                                 int index = labels.indexOf(label);
                                 data.set(index, data.get(index) + 1);
@@ -128,8 +120,6 @@ public class ControllerURL extends ControllerBase {
                     modelo.put("acortadores", acortadores);
                     modelo.put("labels", labels);
                     modelo.put("data", data);
-                    modelo.put("ips", ips);
-                    modelo.put("agentes", agentes);
 
                     //Guardar el nombre de Usuario en header
                     modelo.put("session", ctx.sessionAttributeMap());
