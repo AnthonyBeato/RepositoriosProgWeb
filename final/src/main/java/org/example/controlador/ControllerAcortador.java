@@ -129,7 +129,6 @@ public class ControllerAcortador extends ControllerBase {
                         ctx.status(HttpStatus.NOT_FOUND_404).result("Pagina no encontrada");
                     }else{
                         ServiciosAcortador.getInstancia().incrementarContadorVisitas(acortador);
-                        //ServiciosAcortador.getInstancia().actualizarAcortador(acortador);
                         acortador.agregarAgenteUsuario(userAgent);
                         acortador.agregarDireccionIP(ipAddress);
                         acortador.agregarFechaAcceso(dateTime);
@@ -144,6 +143,7 @@ public class ControllerAcortador extends ControllerBase {
                         ctx.redirect(acortador.getURLOriginal().getURLOriginal());
                     }
                 });
+
             });
         });
     }

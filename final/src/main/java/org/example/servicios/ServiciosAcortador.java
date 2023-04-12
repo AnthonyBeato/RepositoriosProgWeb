@@ -9,10 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class ServiciosAcortador extends GestionBD<Acortador> {
 
@@ -146,22 +143,7 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
         acortador.setVisits_counter(visitasActuales + 1);
     }
 
-    public void actualizarAcortador(Acortador acortador) {
-        EntityManager em = getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.merge(acortador);
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
+
 
 
     public List<Acortador> cambiarURLSAUsuario(Usuario usuario){

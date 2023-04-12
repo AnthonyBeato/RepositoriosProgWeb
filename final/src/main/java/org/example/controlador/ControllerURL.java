@@ -3,6 +3,7 @@ package org.example.controlador;
 import Utilidad.ControllerBase;
 import io.javalin.Javalin;
 import org.example.encapsulacion.Acortador;
+import org.example.encapsulacion.URL;
 import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosURL;
@@ -14,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class ControllerURL extends ControllerBase {
 
@@ -80,6 +80,7 @@ public class ControllerURL extends ControllerBase {
                     modelo.put("totalPages", totalPages);
                     modelo.put("cantURLXPage", cantURLXPage);
                     modelo.put("cantURLSCortas", cantURLSCortas);
+                    modelo.put("usuario",usuario);
 
                     modelo.put("session", ctx.sessionAttributeMap());
                     ctx.render("/templates/vista/listadoUrls.html", modelo);
@@ -87,24 +88,36 @@ public class ControllerURL extends ControllerBase {
             });
 
             path("/Seguridad/URL", () ->{
-                get("/{idAcortador}", ctx -> {
+                get("/detalle/{idAcortador}", ctx -> {
                     Map<String, Object> modelo = new HashMap<>();
-                    Acortador urlAcortada = serviciosAcortador.find(ctx.pathParam("idAcortador"));
-                    modelo.put("idAcortador", urlAcortada.getIdAcortador());
-                    modelo.put("url_original", urlAcortada.getURLOriginal());
-                    modelo.put("url_acortada", urlAcortada.getURLAcortado());
+                    if((serviciosAcortador.find(ctx.pathParam("idAcortador")) != null)){
+                        Acortador urlAcortada = serviciosAcortador.find(ctx.pathParam("idAcortador"));
+                        modelo.put("idAcortador", urlAcortada.getIdAcortador());
+                        modelo.put("url_original", urlAcortada.getURLOriginal());
+                        modelo.put("url_acortado", urlAcortada.getURLAcortado());
+                    }
+
 
                     // Crear lista de etiquetas y datos para el grafico de barras
                     List<Acortador> acortadores = serviciosAcortador.findAll();
                     List<String> labels = new ArrayList<>();
                     List<Integer> data = new ArrayList<>();
+                    List<String> ips = new ArrayList<>();
+                    List<String> agentes = new ArrayList<>();
+
                     for (Acortador acortador : acortadores) {
                         List<LocalDateTime> fechasAcceso = acortador.getFechasAcceso();
-                        for (LocalDateTime fecha : fechasAcceso) {
+                        List<String> direccionIP = acortador.getDireccionesIP();
+                        List<String> agenteUsuario = acortador.getAgentesUsuario();
+
+                        for (int i = 0; i < fechasAcceso.size(); i++) {
+                            LocalDateTime fecha = fechasAcceso.get(i);
                             String label = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
                             if (!labels.contains(label)) {
                                 labels.add(label);
                                 data.add(1);
+                                ips.add(direccionIP.get(i));
+                                agentes.add(agenteUsuario.get(i));
                             } else {
                                 int index = labels.indexOf(label);
                                 data.set(index, data.get(index) + 1);
@@ -115,14 +128,42 @@ public class ControllerURL extends ControllerBase {
                     modelo.put("acortadores", acortadores);
                     modelo.put("labels", labels);
                     modelo.put("data", data);
+                    modelo.put("ips", ips);
+                    modelo.put("agentes", agentes);
 
                     //Guardar el nombre de Usuario en header
                     modelo.put("session", ctx.sessionAttributeMap());
                     ctx.render("/templates/vista/detalleURL.html", modelo);
                 });
+            });
 
-                get("/Administrar", ctx -> {
+            path("/Seguridad/URL/Administrar", () -> {
+                get("/", ctx -> {
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Administrador de URLs");
+                    List<Acortador> lista = serviciosAcortador.findAll();
+                    modelo.put("acortadas", lista);
+                    modelo.put("session", ctx.sessionAttributeMap());
+                    Usuario usuario = ctx.sessionAttribute("usuario");
+                    modelo.put("usuario", usuario);
 
+
+
+                    ctx.render("/templates/vista/gestionUrls.html", modelo);
+                });
+
+                post("/Eliminar/{idAcortador}", ctx -> {
+                    String identificador = ctx.pathParam("idAcortador");
+
+                    //Eliminar de la BD
+                    Acortador acortado = serviciosAcortador.find(identificador);
+
+                    Acortador temp = acortado;
+                    serviciosAcortador.eliminar(identificador);
+                    ServiciosURL.getInstancia().eliminar(temp.getURLOriginal().getIdURL());
+                    System.out.println("          Se elimino :" + identificador);
+
+                    ctx.redirect("/URL/misUrls");
                 });
             });
         });

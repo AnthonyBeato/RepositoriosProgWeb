@@ -30,54 +30,30 @@
                         <tr>
                             <th scope="col"> URL Acortado </th>
                             <th scope="col"> URL Original </th>
+                            <th scope="col"> Usuario </th>
                             <th scope="col"> Fecha creacion </th>
                             <th scope="col"> Cantidad visitas </th>
-                            <th scope="col"> Cliente del usuario </th>
                             <th scope="col"> Direccion IP </th>
-                            <th scope="col"> Resumen </th>
+                            <th th:if="${(usuario != null ) && (usuario.isAdmin == true)}"> Accion </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="url : ${misUrls}">
+                        <tr th:each="url : ${acortadas}">
                             <td th:text="${url.URLAcortado}"></td>
                             <td th:text="${url.URLOriginal.URLOriginal}"></td>
+                            <td th:text="${url.usuario.usuario}"></td>
                             <td th:text="${url.created_date_time}"></td>
                             <td th:text="${url.visits_counter}"></td>
-                            <td th:text="${url.agente_cliente}"></td>
                             <td th:text="${url.ip_address}"></td>
-                            <td>
-                                <a th:href="'/Seguridad/URL/detalle/' + ${url.idAcortador}">Estadisticas</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="8"> <!-- Colspan 3 para que ocupe las tres columnas de la tabla -->
-                                <div class="row">
-                                    <nav aria-label="Page navigation">
-                                        <nav>
-                                            <ul class="pagination justify-content-end">
-                                                <li class="page-item" th:classappend="${actualPage == 1} ? 'disabled' : ''">
-                                                    <a class="page-link" th:href="'/?page=' + ${actualPage - 1}" tabindex="-1">Anterior</a>
-                                                </li>
-
-                                                <li class="page-item" th:classappend="${page == actualPage} ? 'selected' : ''" th:each="page : ${#numbers.sequence(actualPage - 2, actualPage + 2)}"
-                                                    th:if="${page > 0 && page <= totalPages}">
-                                                    <a class="page-link" th:href="${'/?page=' + page}" th:text="${page}"></a>
-                                                </li>
-
-                                                <li class="page-item">
-                                                    <a class="page-link" th:classappend="${actualPage == totalPages} ? 'disabled' : ''"
-                                                       th:href="'/?page=' + ${actualPage + 1}">Siguiente</a>
-                                                </li>
-
-                                            </ul>
-                                        </nav>
-                                    </nav>
+                            <td th:if="${usuario != null}">
+                                <div th:if="${usuario.isAdmin == true}">
+                                    <form method="post" th:action="'/Seguridad/URL/Administrar/Eliminar/' + ${url.idAcortador}">
+                                        <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
-                        </tfoot>
+                        </tbody>
                     </table>
                 </div>
             </div>
