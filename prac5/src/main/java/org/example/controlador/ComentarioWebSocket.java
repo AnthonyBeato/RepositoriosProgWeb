@@ -2,12 +2,13 @@ package org.example.controlador;
 import io.javalin.websocket.WsCloseContext;
 import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsContext;
+import org.example.Main;
 import org.example.encapsulacion.Usuario;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ComentarioWebSocket {
+public class ComentarioWebSocket  extends Main {
 
     private static ConcurrentHashMap<String, WsContext> userWsMap = new ConcurrentHashMap<>();
 
@@ -28,9 +29,7 @@ public class ComentarioWebSocket {
     }
 
     public static void comentarioEliminado(String comentarioId) {
-        for (WsContext userCtx : userWsMap.values()) {
-            userCtx.send("Comentario eliminado: " + comentarioId);
-        }
+        Main.broadcastMessage("Comentario eliminado: " + comentarioId);
     }
 
     private static String getUserIdFromSession(WsContext ctx) {

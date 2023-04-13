@@ -148,7 +148,7 @@ public class Main {
         });
     }
 
-    private static void broadcastMessage(String message) {
+    public static void broadcastMessage(String message) {
         users.values().forEach(user -> {
             if (user.session.isOpen()) {
                 user.send(message);
