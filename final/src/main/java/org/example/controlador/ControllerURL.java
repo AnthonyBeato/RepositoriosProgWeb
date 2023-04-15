@@ -90,8 +90,9 @@ public class ControllerURL extends ControllerBase {
             path("/Seguridad/URL", () ->{
                 get("/detalle/{idAcortador}", ctx -> {
                     Map<String, Object> modelo = new HashMap<>();
-                    if((serviciosAcortador.find(ctx.pathParam("idAcortador")) != null)){
-                        Acortador urlAcortada = serviciosAcortador.find(ctx.pathParam("idAcortador"));
+                    Acortador urlAcortada = null;
+                    if ((serviciosAcortador.find(ctx.pathParam("idAcortador")) != null)) {
+                        urlAcortada = serviciosAcortador.find(ctx.pathParam("idAcortador"));
                         modelo.put("idAcortador", urlAcortada.getIdAcortador());
                         modelo.put("url_original", urlAcortada.getURLOriginal());
                         modelo.put("url_acortado", urlAcortada.getURLAcortado());
@@ -120,6 +121,28 @@ public class ControllerURL extends ControllerBase {
                     modelo.put("acortadores", acortadores);
                     modelo.put("labels", labels);
                     modelo.put("data", data);
+                    modelo.put("cantidadVisitas", urlAcortada.getVisits_counter());
+
+
+                    // Crear lista de etiquetas y datos para el grafico de barras
+                    List<String> labels2 = new ArrayList<>();
+                    List<Integer> data2 = new ArrayList<>();
+
+                    for (Acortador acortador : acortadores) {
+                        for (String agente : acortador.getAgentesUsuario()) {
+                            if (!labels2.contains(agente)) {
+                                labels2.add(agente);
+                                data2.add(1);
+                            } else {
+                                int index = labels2.indexOf(agente);
+                                data2.set(index, data2.get(index) + 1);
+                            }
+                        }
+                    }
+
+                    modelo.put("acortadores", acortadores);
+                    modelo.put("labels2", labels2);
+                    modelo.put("data2", data2);
 
                     //Guardar el nombre de Usuario en header
                     modelo.put("session", ctx.sessionAttributeMap());
