@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 body, button, a, h1, h2{
     font-family: 'Raleway', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     font-weight: 600 !important;
@@ -5,7 +9,7 @@ body, button, a, h1, h2{
 
 header{
     background-color: #272836;
-    padding: 10px;
+    padding: 15px;
 }
 
 header span{
@@ -21,7 +25,7 @@ footer{
     background-color: #272836;
     color: white;
     position: relative;
-    padding: 10px;
+    padding: 20px;
 }
 
 .image-container{
@@ -41,6 +45,57 @@ footer{
     max-width: 90px;
     min-height: 31px;
 }
+
+.containerDivisor{
+    background-color: #272836;
+    padding: 15px !important;
+}
+
+.container-fluid{
+    padding: 0 !important;
+}
+
+#mydescription, #mytitle{
+    color: white;
+    mix-blend-mode: difference;
+}
+
+.preview-card {
+    background-color: #f8f9fa;
+    border: none;
+}
+
+.preview-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.preview-image::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/degradado.png'); /* Reemplaza con tu imagen de fondo */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.5; /* Ajusta la opacidad según tus preferencias */
+}
+
+.preview-content {
+    position: relative;
+    padding: 20px;
+    margin-top: -100px; /* Ajusta el margen superior para centrar la tarjeta en la imagen */
+    z-index: 1;
+}
+
+
+
+
 
 
 

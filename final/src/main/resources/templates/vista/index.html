@@ -14,60 +14,122 @@
 
 <div class="container-fluid">
 
-    <div class="row shadow-lg">
-        <header th:insert="~{templates/vista/reutilizable_fragments.html :: header}"></header>
+    <div class="row">
+        <div class="container-fluid">
+            <header th:insert="~{templates/vista/reutilizable_fragments.html :: header}"></header>
+        </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="container my-5">
-            <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
-                    <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Bienvenido!</h1>
-                    <p class="lead">LinkZip es la página que acorta tus links con un clic. También te ofrece estadísticas con gráficos y códigos QR para tus links. Prueba LinkZip y comparte tu contenido fácilmente!</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <a href="" type="button" class="btn btn-warning btn-lg px-4 me-md-2 fw-bold">Inicia aqui</a>
-                        <a href="#information" type="button" class="btn btn-outline-secondary btn-lg px-4">Mas informacion</a>
+    <div class="row">
+        <div class="container-fluid">
+            <div class="container my-5">
+                <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+                    <div class="col-lg-6 p-3 p-lg-5 pt-lg-3">
+                        <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Bienvenido!</h1>
+                        <p class="lead">LinkZip es la pagina que acorta tus links con un clic. Tambien te ofrece estadisticas con graficos y codigos QR para tus links. Prueba LinkZip y comparte tu contenido facilmente!</p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                            <a href="/registrar" type="button" class="btn btn-warning btn-lg px-4 me-md-2">Inicia gratis aqui</a>
+                            <a href="#informacion" type="button" class="btn btn-outline-secondary btn-lg px-4">Mas informacion</a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="bootstrap-docs.png" alt="" width="720">
+                    <div class="col-lg-5 overflow-hidden p-3 offset-lg-1" style="max-width: 720px; max-height: 450px">
+                        <img class="img-fluid float-end my-5 ps-5" src="/images/graphicsAndQR.png" alt="" style="transform: scale(2.0); margin-top: 150px !important; ">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="mb-3">
-            <form action="/acortar" method="post">
-                <div class="row">
-                    <div class="col-md-6 offset-2">
-                        <input type="url" name="url_original" class="form-control" id="dominio" placeholder="Acortar tu link">
+    </div>
+
+    <div class="b-example-divider"></div>
+
+    <div class="row">
+        <div class="container-fluid">
+            <div class="containerDivisor text-secondary px-4 py-5 text-center shadow-lg">
+                <div class="py-5">
+                    <h1 class="display-5 fw-bold text-white">Acorta tus URL</h1>
+                    <div class="col-lg-6 mx-auto">
+                        <form action="/acortar" method="post">
+                            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                                <label hidden="hidden" for="dominio">Acorta tu link</label>
+                                <input type="url" name="url_original" class="form-control" id="dominio" placeholder="Acortar tu link">
+                                <button type="submit" class="btn btn-warning" id="submit">Acortar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-warning" id="submit">Acortar</button>
+
+                    <h3 class="mt-5">Preview de la pagina:</h3>
+                    <div class="col-lg-6 mx-auto mb-5">
+                        <div class="card preview-card">
+                            <div class="preview-image card-body d-flex justify-content-center align-items-center">
+                                <img id="myimage" style="max-width: 120%; min-width: 120%;" class="card-img-top">
+                            </div>
+                            <div class="card-body preview-content">
+                                <h5 class="card-title" id="mytitle"></h5>
+                                <p id="mydescription" class="card-text"></p>
+                                <a href="#" id="myurl" class="card-link"></a>
+                            </div>
+                        </div>
                     </div>
+
+                    <br>
+
+                    <div class="mb-8" th:if="${seAcorto}">
+                        <div class="col-lg-6  mx-auto">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2>Resultado:</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                                        <div>
+                                            <span>URL original:</span>
+                                            <input type="url" th:value="${url_original}"  class="form-control" name="url_original" id="floatingInput" disabled>
+                                        </div>
+                                        <div>
+                                            <span>URL acortada:</span>
+                                            <input type="text" th:value="${url_acortada}" class="form-control" name="url_acortada" id="floatingInput2" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="col-lg-3 mx-auto">
+                                        <a class="btn btn-warning" th:href="'/'+ ${url_acortada}" target="_blank">Ir al enlace</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
-            </form>
+            </div>
+        </div>
+    </div>
 
-            <span>URL original:</span>
-            <input type="text" th:value="${url_original}" name="url_original" id="floatingInput">
+    <div class="b-example-divider"></div>
 
-            <span>URL acortada:</span>
-            <input type="text" th:value="${url_acortada}" name="url_acortada" id="floatingInput2">
-
-            <a class="btn btn-warning" th:href="'/'+ ${url_acortada}" target="_blank">Enlace</a>
-
-            <div class="col">
-                <div class="card" style="width: 100%; min-height: 300px; max-height: 300px; text-align: justify;">
-                    <div class="card-body">
-                        <img id="myimage" style="max-width: 150px; min-width: 150px;" class="card-img-top">
-                        <div class="is-clipped">
-                            <h5 class="card-title" id="mytitle"></h5>
-                            <p id="mydescription" class="card-text"></p>
-                            <a href="#" id="myurl" class="card-link"></a>
+    <div class="row" >
+        <div class="container-fluid">
+            <div class="text-secondary px-4 py-5 text-center shadow-lg" id="informacion">
+                <div class="px-4 pt-5 my-5 text-center border-bottom">
+                    <h1 class="display-4 fw-bold text-body-emphasis">Informacion</h1>
+                    <div class="col-lg-6 mx-auto">
+                        <p class="lead mb-4">Al registrarte en nuestra pagina acortadora de URLs, podras acceder a un dashboard completo con estadisticas sobre tus URLs. Podras ver cuantas veces se han visitado tus paginas, desde que dispositivos, y como ha evolucionado el trafico a lo largo del tiempo. Ademas de esto, tendras acceso a graficos personalizados e ilustrativos que te ayudaran a analizar y mejorar tu estrategia de marketing digital. Y por si fuera poco, tambien podras generar un codigo QR unico para cada URL, que facilitara el acceso rapido a tu pagina desde cualquier dispositivo movil. No esperes mas y registrate ya en nuestra pagina acortadora de URLs!</p>
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                            <a href="/URL/misUrls" type="button" class="btn btn-success btn-lg px-4 me-sm-3">Listado de URLS</a>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden" style="max-height: 30vh;">
+                        <div class="container px-5">
+                            <img src="/images/dashboard.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <script>
         const functionDomain = () => {
@@ -99,7 +161,9 @@
     </script>
 
     <div class="row">
-        <footer th:insert="~{templates/vista/reutilizable_fragments.html :: footer}"></footer>
+        <div class="container-fluid">
+            <footer th:insert="~{templates/vista/reutilizable_fragments.html :: footer}"></footer>
+        </div>
     </div>
 </div>
 

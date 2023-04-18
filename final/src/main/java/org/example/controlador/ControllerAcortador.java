@@ -36,6 +36,8 @@ public class ControllerAcortador extends ControllerBase {
 
                     modelo.put("titulo", "Acortador de links");
                     modelo.put("session", ctx.sessionAttributeMap());
+                    boolean seAcorto = false;
+                    modelo.put("seAcorto", seAcorto);
 
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     if(usuario != null){
@@ -133,6 +135,8 @@ public class ControllerAcortador extends ControllerBase {
                     modelo.put("url_original", URLOriginal);
                     modelo.put("session", ctx.sessionAttributeMap());
 
+                    boolean seAcorto = true;
+                    modelo.put("seAcorto", seAcorto);
 
                     ctx.render("/templates/vista/index.html", modelo);
                 });
