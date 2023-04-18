@@ -61,7 +61,7 @@ public class ControllerAcortador extends ControllerBase {
                             System.out.println("El link: " + acortador.getURLOriginal() + "se le paso al usuario: " + acortador.getUsuario().getUsuario());
                         }
                         //serviciosAcortador.listaAcortadoresParaNoRegistrados.clear();
-                        if(serviciosAcortador.getListaAcortadoresPorSesion() != null){
+                        if(serviciosAcortador.getListaAcortadoresPorSesion().get(sessionId) != null){
                             serviciosAcortador.getListaAcortadoresPorSesion().get(sessionId).clear();
                         }
                     }
