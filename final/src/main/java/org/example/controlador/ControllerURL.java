@@ -2,6 +2,7 @@ package org.example.controlador;
 
 import Utilidad.ControllerBase;
 import io.javalin.Javalin;
+import jakarta.servlet.http.HttpSession;
 import org.example.encapsulacion.Acortador;
 import org.example.encapsulacion.URL;
 import org.example.encapsulacion.Usuario;
@@ -51,14 +52,20 @@ public class ControllerURL extends ControllerBase {
                     List<Acortador> misURLS = new ArrayList<>();
 
                     if (usuario == null){
-                        cantURLSCortas = serviciosAcortador.listaAcortadoresParaNoRegistrados.size();
+                        HttpSession session = ctx.req().getSession(true);
+                        String sessionId = session.getId();
+                        List<Acortador> lista = serviciosAcortador.getListaAcortadoresPorSesion().get(sessionId);
+                        if(lista == null){
+                            lista = new ArrayList<>();
+                        }
+
+                        cantURLSCortas = lista.size();
                         totalPages = (int) Math.ceil((double) cantURLSCortas/cantURLXPage);
                         indiceFinal = Math.min(indiceIni + cantURLXPage, cantURLSCortas);
 
-                        misURLS = serviciosAcortador.listaAcortadoresParaNoRegistrados
+                        misURLS = lista
                                 .subList(indiceIni, indiceFinal)
                                 .stream()
-                                .filter(a -> a.getVisits_counter() >= 0)
                                 .toList();
                     }else{
                         cantURLSCortas = serviciosAcortador.findAllByUser(usuario).size();

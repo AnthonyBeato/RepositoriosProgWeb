@@ -57,6 +57,8 @@ public class ControllerSeguridad extends ControllerBase {
                 get(ctx -> {
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     String data = ctx.cookie("data");
+                    HttpSession session = ctx.req().getSession(true);
+
 
                     if(data != null){
                         AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
@@ -66,6 +68,7 @@ public class ControllerSeguridad extends ControllerBase {
                         if(tmp != null) {
                             usuario = tmp;
                             ctx.sessionAttribute("usuario", tmp);
+                            ctx.sessionAttribute("SESSION_ID", session.getId());
                         }
                     }
 

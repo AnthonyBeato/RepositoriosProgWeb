@@ -15,7 +15,9 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
 
     private static ServiciosAcortador instancia;
 
-    public List<Acortador> listaAcortadoresParaNoRegistrados = new ArrayList<>();
+    //public List<Acortador> listaAcortadoresParaNoRegistrados = new ArrayList<>();
+    private Map<String, List<Acortador>> listaAcortadoresPorSesion = new HashMap<>();
+
 
     public ServiciosAcortador() {
         super(Acortador.class);
@@ -85,15 +87,15 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
         return null;
     }
 
-    public Acortador findByShortUrlNoRegistrados(String URLAcortado){
-
-        for (Acortador acortado : listaAcortadoresParaNoRegistrados){
-            if (acortado.getURLAcortado().equals(URLAcortado)){
-                return acortado;
-            }
-        }
-        return null;
-    }
+//    public Acortador findByShortUrlNoRegistrados(String URLAcortado){
+//
+//        for (Acortador acortado : listaAcortadoresParaNoRegistrados){
+//            if (acortado.getURLAcortado().equals(URLAcortado)){
+//                return acortado;
+//            }
+//        }
+//        return null;
+//    }
 
     public String generateURLCorta(String URLOriginal){
         String base62 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -137,6 +139,13 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
         return shortUrl.toString();
     }
 
+    public Map<String, List<Acortador>> getListaAcortadoresPorSesion() {
+        return listaAcortadoresPorSesion;
+    }
+
+    public void setListaAcortadoresPorSesion(Map<String, List<Acortador>> listaAcortadoresPorSesion) {
+        this.listaAcortadoresPorSesion = listaAcortadoresPorSesion;
+    }
 
     public void incrementarContadorVisitas(Acortador acortador) {
         int visitasActuales = acortador.getVisits_counter();
@@ -146,11 +155,13 @@ public class ServiciosAcortador extends GestionBD<Acortador> {
 
 
 
-    public List<Acortador> cambiarURLSAUsuario(Usuario usuario){
-        List<Acortador> lista = listaAcortadoresParaNoRegistrados;
-
+    public List<Acortador> cambiarURLSAUsuario(Usuario usuario, String sessionID){
+        //List<Acortador> lista = listaAcortadoresParaNoRegistrados;
+        List<Acortador> lista = getListaAcortadoresPorSesion().get(sessionID);
+        if(lista == null){
+            lista = new ArrayList<>();
+        }
         for (Acortador acortador : lista) {
-            //System.out.println("  Usuario anterior: "+ acortador.getUsuario().getUsuario());
             acortador.setUsuario(usuario);
             System.out.println("  Se pasó el url: " + acortador.getURLOriginal().getURLOriginal() + "al usuario: " + acortador.getUsuario().getUsuario());
         }

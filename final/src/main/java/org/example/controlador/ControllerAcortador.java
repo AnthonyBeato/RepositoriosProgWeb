@@ -2,6 +2,7 @@ package org.example.controlador;
 
 import Utilidad.ControllerBase;
 import io.javalin.Javalin;
+import jakarta.servlet.http.HttpSession;
 import org.eclipse.jetty.http.HttpStatus;
 import org.example.encapsulacion.Acortador;
 import org.example.encapsulacion.URL;
@@ -39,7 +40,15 @@ public class ControllerAcortador extends ControllerBase {
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     if(usuario != null){
                         //Mandar listado de url desde fuera de la sesion, para ponerlo en la sesión.
-                        List<Acortador> lista = serviciosAcortador.cambiarURLSAUsuario(usuario);
+                        HttpSession session = ctx.req().getSession(true);
+                        String sessionId = session.getId();
+                        System.out.println("           En controllerAcortador id de la sesion es" + sessionId);
+
+
+                        List<Acortador> lista = serviciosAcortador.cambiarURLSAUsuario(usuario, sessionId);
+                        if(lista == null){
+                            lista = new ArrayList<>();
+                        }
                         for (Acortador acortador: lista) {
                             if(serviciosAcortador.find(acortador.getIdAcortador()) != null){
                                 ServiciosURL.getInstancia().editar(acortador.getURLOriginal());
@@ -51,7 +60,8 @@ public class ControllerAcortador extends ControllerBase {
 
                             System.out.println("El link: " + acortador.getURLOriginal() + "se le paso al usuario: " + acortador.getUsuario().getUsuario());
                         }
-                        serviciosAcortador.listaAcortadoresParaNoRegistrados.clear();
+                        //serviciosAcortador.listaAcortadoresParaNoRegistrados.clear();
+                        serviciosAcortador.getListaAcortadoresPorSesion().get(sessionId).clear();
                     }
                     modelo.put("usuario", usuario);
 
@@ -78,16 +88,28 @@ public class ControllerAcortador extends ControllerBase {
 
                     Acortador acortador = new Acortador(URLAcortada, url, dateTime, 0, userAgent, ipAddress, usuario);
 
+                    Map<String, List<Acortador>> listaAcortadoresPorSesion = serviciosAcortador.getListaAcortadoresPorSesion();
                     if(usuario == null){
+                        HttpSession session = ctx.req().getSession(true);
+                        String sessionId = session.getId();
+
+                        List<Acortador> lista = listaAcortadoresPorSesion.get(sessionId);
+                        if(lista == null){
+                            lista = new ArrayList<>();
+                            listaAcortadoresPorSesion.put(sessionId, lista);
+                        }
+
                         boolean encontrado = false;
-                        for (Acortador aux: serviciosAcortador.listaAcortadoresParaNoRegistrados) {
+                        for (Acortador aux: lista) {
                             if(Objects.equals(aux.getURLOriginal().getURLOriginal(), acortador.getURLOriginal().getURLOriginal())){
                                 encontrado = true;
                                 break;
                             }
                         }
                         if (!encontrado) {
-                            serviciosAcortador.listaAcortadoresParaNoRegistrados.add(acortador);
+                            lista.add(acortador);
+                            ServiciosURL.getInstancia().crear(url);
+                            serviciosAcortador.crear(acortador);
                         }
                     }else{
                         boolean encontrado = false;
@@ -117,7 +139,9 @@ public class ControllerAcortador extends ControllerBase {
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     Acortador acortador = new Acortador();
                     if(usuario == null){
-                        acortador = ServiciosAcortador.getInstancia().findByShortUrlNoRegistrados(ctx.pathParam("url_acortada"));
+                        //acortador = ServiciosAcortador.getInstancia().findByShortUrlNoRegistrados(ctx.pathParam("url_acortada"));
+                        acortador = serviciosAcortador.findByShortUrl(ctx.pathParam("url_acortada"));
+
                     }else{
                         acortador = ServiciosAcortador.getInstancia().findByShortUrl(ctx.pathParam("url_acortada"));
                     }
@@ -132,9 +156,9 @@ public class ControllerAcortador extends ControllerBase {
                         acortador.agregarAgenteUsuario(userAgent);
                         acortador.agregarDireccionIP(ipAddress);
                         acortador.agregarFechaAcceso(dateTime);
-                        if(usuario != null){
+                        //if(usuario != null){
                             serviciosAcortador.editar(acortador);
-                        }
+                        //}
                         System.out.println("   agente del usuario: "  + userAgent);
                         System.out.println("     ip: " + ipAddress);
                         System.out.println("    fecha: " + dateTime);
