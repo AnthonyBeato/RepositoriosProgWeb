@@ -130,7 +130,6 @@ public class ControllerURL extends ControllerBase {
                     modelo.put("data", data);
                     modelo.put("cantidadVisitas", urlAcortada.getVisits_counter());
 
-
                     // Crear lista de etiquetas y datos para el grafico de barras
                     List<String> labels2 = new ArrayList<>();
                     List<Integer> data2 = new ArrayList<>();
@@ -150,6 +149,8 @@ public class ControllerURL extends ControllerBase {
                     modelo.put("acortadores", acortadores);
                     modelo.put("labels2", labels2);
                     modelo.put("data2", data2);
+                    modelo.put("cantidadNavegadores", labels2.size());
+
 
                     //Guardar el nombre de Usuario en header
                     modelo.put("session", ctx.sessionAttributeMap());

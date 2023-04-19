@@ -93,7 +93,11 @@ footer{
     z-index: 1;
 }
 
-
+#pieNavegadores #myFloatingBars{
+    width: 300px; /* Anchura del contenedor */
+    height: 300px; /* Altura del contenedor */
+    margin: auto; /* Centrar el contenedor */
+}
 
 
 

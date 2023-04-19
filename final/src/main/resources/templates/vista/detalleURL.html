@@ -77,7 +77,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="row mt-2">
-                                <a th:href="'/' + ${url_acortado}" class="btn btn-warning">Dirigirse al URL</a>
+                                <a th:href="'/' + ${url_acortado}" class="btn btn-warning" target="_blank">Dirigirse al URL</a>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                             Cantidad de navegadores
                         </div>
                         <div class="card-body">
-                            <span th:text="${cantidadVisitas}"></span>
+                            <span th:text="${cantidadNavegadores}"></span>
                         </div>
                     </div>
                 </div>
@@ -211,14 +211,6 @@
                 label: 'Cantidad de visitas desde un agente de usuario',
                 data: data2,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
                     'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
