@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package acortadorrn;
+
+import "google/protobuf/timestamp.proto";
+
+
+message URL {
+  string url_completa = 1;
+  string url_acortada = 2;
+  google.protobuf.Timestamp fecha_creacion = 3;
+  Estadisticas estadisticas = 4;
+}
+
+message Estadisticas {
+  int32 num_visitas = 1;
+  google.protobuf.Timestamp ultima_visita = 2;
+  // ... otras estadísticas que necesites ...
+}
+
+//Punto a)
+//Servicios
+service ServicioListado{
+  rpc ListarURLs(ListarURLsRequest) returns (ListarURLsResponse) {}
+}
+
+message ListarURLsRequest{
+  string id_usuario = 1;
+}
+
+message ListarURLsResponse{
+  repeated URL urls = 1;
+}
+
+
+//Punto b
+//Servicio
+message CrearURLRequest{
+  string id_usuario = 1;
+  string url_original = 2;
+}
+
+message CrearURLResponse{
+  URL url = 1;
+  bytes vista_previa = 2;
+}
+
+service ServicioCreacion{
+  rpc CrearURL(CrearURLRequest) returns (CrearURLResponse) {}
+}

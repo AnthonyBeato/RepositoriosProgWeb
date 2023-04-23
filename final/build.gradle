@@ -1,7 +1,8 @@
 plugins {
     id 'java'
     id 'application'
-    id "com.google.protobuf" version "0.9.2"
+    id 'com.google.protobuf' version '0.8.18' //plugin para incluir la compilación de gRPC, ver: https://github.com/grpc/grpc-java#generated-code
+    id 'idea' //plugins para la integración con el IDEA.
 }
 
 group 'org.example'
@@ -47,23 +48,24 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
     implementation 'com.sun.xml.ws:jaxws-ri:2.3.3'
-    runtimeOnly 'io.grpc:grpc-netty-shaded:1.54.1'
+
+
+
+    //Librerías necesarias para para implementar gRPC y Protobuf, ver: https://github.com/grpc/grpc-java
+    implementation 'io.grpc:grpc-netty-shaded:1.54.1'
     implementation 'io.grpc:grpc-protobuf:1.54.1'
-    implementation 'io.grpc:grpc-stub:1.54.1'
+    implementation("io.grpc:grpc-stub:1.54.1")
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
 }
 
-test {
-    useJUnitPlatform()
-}
-
+//Tareas para la generación del código.
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.21.7"
+        artifact = "com.google.protobuf:protoc:3.22.2"
     }
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.54.1'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.54.0'
         }
     }
     generateProtoTasks {
@@ -71,5 +73,40 @@ protobuf {
             grpc {}
         }
     }
+
+    sourceSets {
+        main {
+            proto {
+                srcDir 'src/main/proto'
+            }
+            java {
+                srcDirs 'generated/main/java', 'generated/main/grpc'
+            }
+        }
+    }
 }
+
+//Tareas para integrar con el
+clean {
+    delete protobuf.generatedFilesBaseDir
+}
+
+idea {
+    module {
+        // proto files and generated Java files are automatically added as
+        // source dirs.
+        // If you have additional sources, add them here:
+        sourceDirs += file("src/generated");
+    }
+}
+
+//Permitir tener acceso a la entrada estandar por Gradle
+run{
+    standardInput = System.in
+}
+
+test {
+    useJUnitPlatform()
+}
+
 
