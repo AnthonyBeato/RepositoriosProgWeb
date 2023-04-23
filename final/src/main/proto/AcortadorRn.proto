@@ -44,12 +44,17 @@ message CrearURLRequest {
   string url_acortada = 3;
   google.protobuf.Timestamp fecha_creacion = 4;
   string imagen_previa = 5;
+  string json = 6;
 }
 
-message CrearURLResponse{
-  URL url = 1;
-  bytes vista_previa = 2;
+message CrearURLResponse {
+  string id_usuario = 1;
+  string url_completa = 2;
+  string url_acortada = 3;
+  google.protobuf.Timestamp fecha_creacion = 4;
+  Estadisticas estadisticas = 5;
 }
+
 
 service ServicioCreacion{
   rpc CrearURL(CrearURLRequest) returns (CrearURLResponse) {}

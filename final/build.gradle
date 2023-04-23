@@ -109,6 +109,10 @@ run{
     standardInput = System.in
 }
 
+processResources {
+    duplicatesStrategy = 'exclude'
+}
+
 test {
     useJUnitPlatform()
 }
