@@ -55,7 +55,7 @@ public class Main {
 //            String token = ctx.header("Authorization");
 //            if (token != null) {
 //                try {
-//                    Usuario usuario = JwtUtil.validarToken(token);
+//                    Usuario usuario = JwtUtil.verificarToken(token);
 //                    userRole = usuario.getRol().toString();
 //                } catch (Exception e) {
 //                    e.printStackTrace();
