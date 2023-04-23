@@ -15,7 +15,8 @@ message URL {
 message Estadisticas {
   int32 num_visitas = 1;
   google.protobuf.Timestamp ultima_visita = 2;
-  // ... otras estadísticas que necesites ...
+  string ultima_dir_ip = 3;
+  string ultimo_agente = 4;
 }
 
 //Punto a)
@@ -28,16 +29,21 @@ message ListarURLsRequest{
   string id_usuario = 1;
 }
 
+//message ListarURLsResponse{
+//  repeated URL urls = 1;
+//}
 message ListarURLsResponse{
-  repeated URL urls = 1;
+  string json = 1;
 }
-
 
 //Punto b
 //Servicio
-message CrearURLRequest{
+message CrearURLRequest {
   string id_usuario = 1;
   string url_original = 2;
+  string url_acortada = 3;
+  google.protobuf.Timestamp fecha_creacion = 4;
+  string imagen_previa = 5;
 }
 
 message CrearURLResponse{
