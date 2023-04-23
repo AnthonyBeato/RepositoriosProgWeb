@@ -20,7 +20,10 @@ public class URL {
         this.usuario = usuario;
     }
 
-    public URL() {
+    public URL(Usuario usuario, String urlOriginal, String urlCorta) {
+
+    }
+    public URL(){
 
     }
 

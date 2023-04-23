@@ -1,9 +1,7 @@
 package org.example.encapsulacion;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,6 +19,11 @@ public class Usuario {
     private String contrasena;
     @Column(name = "is_admin")
     private boolean isAdmin;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "idUsuario")
+    private List<URL> urls;
+
+
 
     public Usuario(String nombre, String usuario, String contrasena, Boolean isAdmin) {
         this.idUsuario = UUID.randomUUID().toString();
@@ -73,12 +76,22 @@ public class Usuario {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+    public List<URL> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<URL> urls) {
+        this.urls = urls;
+    }
 
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
         return Objects.equals(usuario, usuario.usuario);
+    }
+    public String getRol() {
+        return isAdmin ? "ADMIN" : "USER";
     }
 
     @Override

@@ -9,6 +9,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/estilo.css">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+    <script>
+        // Almacena el token en una variable JavaScript
+        var jwtToken = [[${jwtToken}]]; // Aquí suponemos que 'jwtToken' es una variable disponible en el contexto de Thymeleaf
+        println("Hola");
+    </script>
+    <script>
+        function realizarSolicitud() {
+            // Crea una nueva solicitud AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/ruta/que/requiere/autenticacion', true);
+
+            // Agrega el token JWT en la cabecera "Authorization"
+            xhr.setRequestHeader('Authorization', 'Bearer ' + jwtToken);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Haz algo con la respuesta
+                    console.log(xhr.responseText);
+                }
+            }
+
+            // Envía la solicitud
+            xhr.send();
+        }
+    </script>
+
 </head>
 <body>
 
@@ -94,6 +121,7 @@
                                 <div class="card-footer">
                                     <div class="col-lg-3 mx-auto">
                                         <a class="btn btn-warning" th:href="'/'+ ${url_acortada}" target="_blank">Ir al enlace</a>
+                                        <button onclick="realizarSolicitud()">Enviar solicitud protegida</button> <!-- Agrega este botón para probar la solicitud AJAX -->
                                     </div>
                                 </div>
                             </div>

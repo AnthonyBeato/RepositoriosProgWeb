@@ -2,7 +2,7 @@ package org.example.servicios;
 
 import org.example.BaseDatos.GestionBD;
 import org.example.encapsulacion.Usuario;
-
+import org.example.encapsulacion.URL;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
@@ -91,6 +91,18 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
         System.out.println("Se registró el usuario: "+ usuario.getUsuario());
         ServiciosUsuario.getInstancia().crear(usuario);
         return true;
+    }
+    public List<URL> obtenerUrlsPorUsuario(String usuarioId) {
+        EntityManager em = getEntityManager();
+        Query query = em.createQuery("select u from URL u where u.usuario.idUsuario = :usuarioId", URL.class);
+        query.setParameter("usuarioId", usuarioId);
+        return query.getResultList();
+    }
+
+    public URL crearUrlParaUsuario(Usuario usuario, String urlOriginal, String urlCorta) {
+        URL nuevaUrl = new URL(usuario, urlOriginal, urlCorta);
+        ServiciosURL.getInstancia().crear(nuevaUrl);
+        return nuevaUrl;
     }
 
 

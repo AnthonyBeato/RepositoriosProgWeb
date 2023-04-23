@@ -8,6 +8,8 @@ import org.example.encapsulacion.URL;
 import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosURL;
+import io.javalin.http.Context;
+import org.example.servicios.ServiciosUsuario;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +26,8 @@ public class ControllerURL extends ControllerBase {
 
     public ControllerURL(Javalin app) {
         super(app);
+        app.get("/api/usuarios/{usuarioId}/urls", this::obtenerUrls);
+        app.post("/api/usuarios/{usuarioId}/urls", this::crearUrl);
     }
 
     @Override
@@ -189,5 +193,28 @@ public class ControllerURL extends ControllerBase {
             });
         });
 
+    }
+    public void obtenerUrls(Context ctx) {
+        String usuarioId = ctx.pathParam("usuarioId");
+        Usuario usuario = ServiciosUsuario.getInstancia().getUsuarioByID(usuarioId);
+        if (usuario != null) {
+            List<URL> urls = ServiciosUsuario.getInstancia().obtenerUrlsPorUsuario(usuarioId);
+            ctx.json(urls);
+        } else {
+            ctx.status(404).result("Usuario no encontrado");
+        }
+    }
+
+    public void crearUrl(Context ctx) {
+        String usuarioId = ctx.pathParam("usuarioId");
+        Usuario usuario = ServiciosUsuario.getInstancia().getUsuarioByID(usuarioId);
+        if (usuario != null) {
+            String urlOriginal = ctx.formParam("urlOriginal");
+            String urlCorta = ctx.formParam("urlCorta");
+            URL nuevaUrl = ServiciosUsuario.getInstancia().crearUrlParaUsuario(usuario, urlOriginal, urlCorta);
+            ctx.json(nuevaUrl);
+        } else {
+            ctx.status(404).result("Usuario no encontrado");
+        }
     }
 }

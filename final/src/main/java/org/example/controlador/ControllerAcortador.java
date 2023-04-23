@@ -9,10 +9,7 @@ import org.example.encapsulacion.URL;
 import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosAcortador;
 import org.example.servicios.ServiciosURL;
-import org.example.servicios.ServiciosUsuario;
 
-import javax.xml.crypto.Data;
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -90,7 +87,7 @@ public class ControllerAcortador extends ControllerBase {
                     String ipAddress = ctx.ip();
                     LocalDateTime dateTime = LocalDateTime.now();
 
-                    Acortador acortador = new Acortador(URLAcortada, url, dateTime, 0, userAgent, ipAddress, usuario);
+                    Acortador acortador = new Acortador(URLAcortada, url, dateTime, 0, userAgent, ipAddress,  usuario);
 
                     Map<String, List<Acortador>> listaAcortadoresPorSesion = serviciosAcortador.getListaAcortadoresPorSesion();
                     if(usuario == null){

@@ -11,12 +11,17 @@ import org.example.controlador.ControllerSeguridad;
 import org.example.controlador.ControllerURL;
 import org.example.encapsulacion.Usuario;
 import org.example.servicios.ServiciosUsuario;
-
+import org.example.encapsulacion.JwtUtil;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Main {
     private static final Map<String, WsConnectContext> users = new ConcurrentHashMap<>();
@@ -41,6 +46,33 @@ public class Main {
                 staticFileConfig.precompress = false;
             });
         });
+
+//        app.cfg.accessManager((handler, ctx, permittedRoles) -> {
+//            Set<String> allowedRoles = new HashSet<>();
+//            permittedRoles.stream().map(Object::toString).forEach(allowedRoles::add);
+//
+//            String userRole = "";
+//            String token = ctx.header("Authorization");
+//            if (token != null) {
+//                try {
+//                    Usuario usuario = JwtUtil.validarToken(token);
+//                    userRole = usuario.getRol().toString();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    System.out.println("Error al validar el token: " + e.getMessage());
+//                }
+//            } else {
+//                System.out.println("No se proporcionó un token en la cabecera 'Authorization'");
+//            }
+//
+//            if (allowedRoles.contains(userRole)) {
+//                handler.handle(ctx);
+//            } else {
+//                System.out.println("El rol del usuario no está permitido: " + userRole);
+//                ctx.status(401).json("Unauthorized");
+//            }
+//        });
+
 
         //Controladoras
         new ControllerSeguridad(app).aplicarDireccionamiento();
@@ -81,6 +113,7 @@ public class Main {
                 }
             });
         });
+
     }
 
     private static String getUserIdFromSession(WsContext ctx) {
