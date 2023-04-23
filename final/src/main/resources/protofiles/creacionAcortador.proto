@@ -1,0 +1,37 @@
+syntax = "proto3";
+package acortador;
+import "google/protobuf/timestamp.proto";
+
+option java_package = "org.example.grpc";
+
+
+//Punto b
+  //URL
+  message URL {
+    string url_original = 1;
+    string url_acortada = 2;
+    google.protobuf.Timestamp fecha_creacion = 3;
+    Estadisticas estadisticas = 4;
+  }
+
+  message Estadisticas{
+    int32 num_visitas = 1;
+    google.protobuf.Timestamp ultima_visita = 2;
+    string ultima_agente_usuario = 3;
+    string ultima_direccion_ip = 4;
+  }
+
+  //Servicio
+  message CrearURLRequest{
+    string id_usuario = 1;
+    string url_original = 2;
+  }
+
+  message CrearURLResponse{
+    URL url = 1;
+    bytes vista_previa = 2;
+  }
+
+  service ServicioCreacion{
+    rpc CrearURL(CrearURLRequest) returns (CrearURLResponse) {}
+  }

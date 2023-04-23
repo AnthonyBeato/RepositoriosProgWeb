@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_package = "org.example.grpc";
+
+//Punto a)
+  //URL
+  message URL {
+    string url_original = 1;
+    string url_acortada = 2;
+    google.protobuf.Timestamp fecha_creacion = 3;
+    Estadisticas estadisticas = 4;
+  }
+
+  message Estadisticas{
+    int32 num_visitas = 1;
+    google.protobuf.Timestamp ultima_visita = 2;
+    string ultima_agente_usuario = 3;
+    string ultima_direccion_ip = 4;
+  }
+
+  //Servicios
+  service ServicioListado{
+    rpc ListarURLs(ListarURLsRequest) returns (ListarURLsResponse) {}
+  }
+
+  message ListarURLsRequest{
+    string id_usuario = 1;
+  }
+
+  message ListarURLsResponse{
+    repeated URL urls = 1;
+  }
