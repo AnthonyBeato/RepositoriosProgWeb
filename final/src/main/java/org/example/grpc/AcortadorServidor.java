@@ -13,23 +13,14 @@ public class AcortadorServidor {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(9090)
-                .addService(new ServicioListadoGrpc.ServicioListadoImplBase() {
-                    @Override
-                    public void listarURLs(AcortadorRn.ListarURLsRequest request, StreamObserver<AcortadorRn.ListarURLsResponse> responseObserver) {
-                        super.listarURLs(request, responseObserver);
-                    }
-                })
-                .addService(new ServicioCreacionGrpc.ServicioCreacionImplBase() {
-                    @Override
-                    public void crearURL(AcortadorRn.CrearURLRequest request, StreamObserver<AcortadorRn.CrearURLResponse> responseObserver) {
-                        super.crearURL(request, responseObserver);
-                    }
-                })
+                .addService(new ListadoService())
+                .addService(new CreacionService())
                 .build();
 
         server.start();
         System.out.println("Servidor iniciado en el puerto " + server.getPort());
 
+        ClienteGRPC.main(new String[] {null});
         server.awaitTermination();
     }
 

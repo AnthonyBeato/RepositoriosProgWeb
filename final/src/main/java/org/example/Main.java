@@ -10,16 +10,24 @@ import org.example.controlador.ControllerQRCode;
 import org.example.controlador.ControllerSeguridad;
 import org.example.controlador.ControllerURL;
 import org.example.encapsulacion.Usuario;
+import org.example.grpc.AcortadorServidor;
+import org.example.grpc.ClienteGRPC;
 import org.example.servicios.ServiciosUsuario;
 import org.example.encapsulacion.JwtUtil;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+
+import org.h2.tools.Server;
+
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -27,7 +35,7 @@ public class Main {
     private static final Map<String, WsConnectContext> users = new ConcurrentHashMap<>();
 
     private static String connectionMethod = "";
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         //Configuración de Hibernate
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -73,6 +81,8 @@ public class Main {
 //            }
 //        });
 
+        //Inicia la base de datos H2 en modo servidor
+        Server server = Server.createTcpServer("-tcpAllowOthers").start();
 
         //Controladoras
         new ControllerSeguridad(app).aplicarDireccionamiento();
@@ -82,6 +92,12 @@ public class Main {
 
         //Iniciar
         app.start(7000);
+
+        //Detiene el servidor H2 cuando la aplicación se cierra
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Deteniendo el servidor H2...");
+            server.stop();
+        }));
 
         entityManager.close();
         entityManagerFactory.close();
@@ -113,6 +129,17 @@ public class Main {
                 }
             });
         });
+
+        System.out.println("¿Quieres entrar al cliente de GRPC Si/No ?");
+        Scanner scanner = new Scanner(System.in);
+        String opcion = "null";
+        opcion = scanner.nextLine();
+
+        if(opcion.equalsIgnoreCase("si")){
+            AcortadorServidor.main(new String[] {"arg1", "arg2"});
+        }
+
+
 
     }
 

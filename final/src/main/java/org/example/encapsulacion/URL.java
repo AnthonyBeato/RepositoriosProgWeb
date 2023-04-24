@@ -14,10 +14,21 @@ public class URL {
     @JoinColumn(name = "usuario")
     private Usuario usuario;
 
+    @Lob
+    @Column(name = "foto")
+    private String fotoBase64;
+
     public URL(String URLOriginal, Usuario usuario) {
         this.idURL = UUID.randomUUID().toString();
         this.URLOriginal = URLOriginal;
         this.usuario = usuario;
+    }
+
+    public URL(String URLOriginal, Usuario usuario, String fotoBase64) {
+        this.idURL = UUID.randomUUID().toString();
+        this.URLOriginal = URLOriginal;
+        this.usuario = usuario;
+        this.fotoBase64 = fotoBase64;
     }
 
     public URL(Usuario usuario, String urlOriginal, String urlCorta) {
@@ -52,4 +63,11 @@ public class URL {
     }
 
 
+    public String getFotoBase64() {
+        return fotoBase64;
+    }
+
+    public void setFotoBase64(String fotoBase64) {
+        this.fotoBase64 = fotoBase64;
+    }
 }

@@ -2,19 +2,21 @@ syntax = "proto3";
 
 package acortadorrn;
 
-import "google/protobuf/timestamp.proto";
+
 
 
 message URL {
-  string url_completa = 1;
-  string url_acortada = 2;
-  google.protobuf.Timestamp fecha_creacion = 3;
-  Estadisticas estadisticas = 4;
+  string id_usuario = 1;
+  string url_completa = 2;
+  string url_acortada = 3;
+  string fecha_creacion = 4;
+  Estadisticas estadisticas = 5;
 }
+
 
 message Estadisticas {
   int32 num_visitas = 1;
-  google.protobuf.Timestamp ultima_visita = 2;
+  string ultima_visita = 2;
   string ultima_dir_ip = 3;
   string ultimo_agente = 4;
 }
@@ -42,7 +44,7 @@ message CrearURLRequest {
   string id_usuario = 1;
   string url_original = 2;
   string url_acortada = 3;
-  google.protobuf.Timestamp fecha_creacion = 4;
+  string fecha_creacion = 4;
   string imagen_previa = 5;
   string json = 6;
 }
@@ -51,7 +53,7 @@ message CrearURLResponse {
   string id_usuario = 1;
   string url_completa = 2;
   string url_acortada = 3;
-  google.protobuf.Timestamp fecha_creacion = 4;
+  string fecha_creacion = 4;
   Estadisticas estadisticas = 5;
 }
 

@@ -45,9 +45,10 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
     }
 
     public Usuario getUsuariotByUser (String usuario){
-
+        System.out.println("Llegó a getusuariobyuser");
         EntityManager em = getEntityManager();
         Query query = em.createQuery("select e from Usuario e where e.usuario like :usuario");
+        System.out.println("lo encontró!!");
         query.setParameter("usuario", "%"+usuario+"%");
         List<Usuario> list = query.getResultList();
 
@@ -59,7 +60,6 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
     }
 
     public Usuario getUsuarioByID(String id){
-
         for (Usuario usuario : findAll()){
             if (usuario.getIdUsuario().equals(id)){
                 return usuario;
@@ -67,6 +67,18 @@ public class ServiciosUsuario extends GestionBD<Usuario> {
         }
         return null;
     }
+
+//    public Usuario getUsuarioByUser(String user){
+//        System.out.println("Llegó a getusuariobyuser");
+//        EntityManager em = getEntityManager();
+//        Query query = em.createNativeQuery("select e from Usuario", Usuario.class);
+//        query.setParameter(1, user);
+//        List<Usuario> list = query.getResultList();
+//        if (list != null && !list.isEmpty()) {
+//            return list.get(0);
+//        }
+//        return null;
+//    }
 
     public List<Usuario> findAll(){
         EntityManager em = getEntityManager();
