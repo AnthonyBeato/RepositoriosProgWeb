@@ -50,6 +50,11 @@ public class Acortador {
         this.usuario = usuario;
     }
 
+    public Acortador(String URLOriginal, Usuario usuario) {
+
+    }
+
+
     public void agregarFechaAcceso(LocalDateTime fecha) {
         this.fechasAcceso.add(fecha);
     }

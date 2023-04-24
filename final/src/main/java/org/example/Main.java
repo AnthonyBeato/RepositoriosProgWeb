@@ -5,15 +5,17 @@ import io.javalin.http.staticfiles.Location;
 import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsContext;
 import org.example.BaseDatos.Bootstrap;
-import org.example.controlador.ControllerAcortador;
-import org.example.controlador.ControllerQRCode;
-import org.example.controlador.ControllerSeguridad;
-import org.example.controlador.ControllerURL;
+import org.example.controlador.*;
 import org.example.encapsulacion.Usuario;
 import org.example.grpc.AcortadorServidor;
 import org.example.grpc.ClienteGRPC;
 import org.example.servicios.ServiciosUsuario;
 import org.example.encapsulacion.JwtUtil;
+import org.apache.cxf.Bus;
+import org.apache.cxf.BusFactory;
+//import org.apache.cxf.endpoint.Server;
+import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
+import org.example.servicios.ServiciosURL;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -25,7 +27,6 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-
 import org.h2.tools.Server;
 
 
@@ -54,6 +55,7 @@ public class Main {
                 staticFileConfig.precompress = false;
             });
         });
+
 
 //        app.cfg.accessManager((handler, ctx, permittedRoles) -> {
 //            Set<String> allowedRoles = new HashSet<>();
@@ -89,6 +91,7 @@ public class Main {
         new ControllerURL(app).aplicarDireccionamiento();
         new ControllerAcortador(app).aplicarDireccionamiento();
         new ControllerQRCode(app).aplicarDireccionamiento();
+        new ControllerRest(app).aplicarDireccionamiento();
 
         //Iniciar
         app.start(7000);
