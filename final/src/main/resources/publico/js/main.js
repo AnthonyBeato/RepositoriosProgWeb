@@ -25,20 +25,3 @@ const functionDomain = () => {
         })
 }
 document.getElementById("dominio").addEventListener("change", functionDomain);
-
-
-
-// Almacenar el token JWT en el almacenamiento local del navegador
-localStorage.setItem("token", "tu_token_jwt");
-
-// Hacer una solicitud AJAX incluyendo el token en la cabecera 'Authorization'
-$.ajax({
-    url: "ruta_protegida",
-    method: "GET",
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
-    },
-    success: function(data) {
-        // Manejar la respuesta del servidor
-    }
-});

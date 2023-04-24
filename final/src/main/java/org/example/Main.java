@@ -56,7 +56,7 @@ public class Main {
 //            if (token != null) {
 //                try {
 //                    Usuario usuario = JwtUtil.verificarToken(token);
-//                    userRole = usuario.getRol().toString();
+//                    userRole = usuario.getRol();
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                    System.out.println("Error al validar el token: " + e.getMessage());

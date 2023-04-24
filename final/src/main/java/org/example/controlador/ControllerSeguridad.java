@@ -41,7 +41,6 @@ public class ControllerSeguridad extends ControllerBase {
                     Usuario usuario = new Usuario(nombre, nomUsuario, pass, false);
                     boolean registrado = ServiciosUsuario.getInstancia().validacionRegistro(usuario, confirmarPass);
 
-
                     System.out.println("Se registró "+ usuario.getUsuario());
                     if(registrado){
                         ctx.redirect("/login");
