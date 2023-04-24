@@ -182,10 +182,14 @@ public class ControllerURL extends ControllerBase {
 
                     //Eliminar de la BD
                     Acortador acortado = serviciosAcortador.find(identificador);
+                    URL url = ServiciosURL.getInstancia().find(acortado.getURLOriginal().getIdURL());
 
-                    Acortador temp = acortado;
+                    Usuario usuario = acortado.getUsuario();
+
+                    //Acortador temp = acortado;
                     serviciosAcortador.eliminar(identificador);
-                    ServiciosURL.getInstancia().eliminar(temp.getURLOriginal().getIdURL());
+                    ServiciosURL.getInstancia().eliminar(url.getIdURL());
+                    //ServiciosURL.getInstancia().eliminar(temp.getURLOriginal().getIdURL());
                     System.out.println("          Se elimino :" + identificador);
 
                     ctx.redirect("/URL/misUrls");
